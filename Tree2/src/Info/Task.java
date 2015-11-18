@@ -30,11 +30,29 @@ public class Task  {
     {
         return new Task(name);
     }
-    public boolean startTask();
-    public boolean pauseTask();
-    public boolean stopTask();
-    public boolean changeName(String name);
-    public Info getFullInfo();
-    public Info getSimpleInfo();
+    public boolean startTask()
+    {
+        return true;
+    }
+    public boolean pauseTask()
+    {
+        return true;
+    }
+    public boolean stopTask()
+    {
+        return true;
+    }
+    public boolean changeName(String name)
+    {
+        return true;
+    }
+    public Info getFullInfo()
+    {
+        return null;
+    }
+    public Info getSimpleInfo()
+    {
+        return null;
+    }
 
 }
