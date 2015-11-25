@@ -10,9 +10,9 @@ import javax.swing.tree.*;
 public class TabbedPaneExample extends JFrame
 {
     private	JTabbedPane tabbedPane;
-    private	JPanel panel1;
     private JTree tree;
     private JPopupMenu menu=new JPopupMenu();
+    private RequestTaskName req=new RequestTaskName();
 
     private void makeTree()
     {
@@ -55,6 +55,7 @@ public class TabbedPaneExample extends JFrame
         setSize( 300, 200 );
         setBackground( Color.gray );
 
+
         JPanel topPanel = new JPanel();
         topPanel.setLayout( new BorderLayout() );
         getContentPane().add( topPanel );
@@ -65,32 +66,47 @@ public class TabbedPaneExample extends JFrame
         TreeModel model=tree.getModel();
         TreeNode root=(DefaultMutableTreeNode)model.getRoot();
         for (int i=0;i<root.getChildCount();i++) {
-            JPanel panel1=new JPanel();
+            JPanel panel=new JPanel();
             JTree jTree = new JTree(root.getChildAt(i), true);
-            jTree.setLocation(panel1.getLocation());
-            panel1.add(jTree, BorderLayout.EAST);
-            tabbedPane.addTab("Page", new JScrollPane(panel1));
+            jTree.setLocation(panel.getLocation());
+            panel.setLayout(new FlowLayout(0));
+            panel.add(jTree);
+            JScrollPane scrollPane = new JScrollPane();
+            scrollPane.setViewportView(panel);
+            tabbedPane.addTab("Page", scrollPane);
             jTree.addTreeSelectionListener(new TreeSelectionListener() {
                 ArrayList<JMenuItem> items;
-                private void fillItems()
-                {
-                    items=new ArrayList<>();
+
+                private void fillItems() {
+                    items = new ArrayList<>();
 
                     JMenuItem item = new JMenuItem("Add task");
                     item.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("Added" + Math.random());
-                            Point p=MouseInfo.getPointerInfo().getLocation();
-                            DefaultMutableTreeNode pathForLocation = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                            if (pathForLocation!=null) pathForLocation.add(newChild);
-                            jTree.repaint();
                             menu.setVisible(false);
+                            if (req.showDialog() == 1) {
+                                DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(req.getTaskName());
+                                DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
+                                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+                                if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
+                                jTree.repaint();
+                            }
                         }
                     });
                     items.add(item);
 
                     item = new JMenuItem("Remove task");
+                    item.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            menu.setVisible(false);
+                            DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
+                            DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+                            if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
+                            jTree.repaint();
+                        }
+                    });
                     items.add(item);
 
                     item = new JMenuItem("Start task");
@@ -100,23 +116,25 @@ public class TabbedPaneExample extends JFrame
                     item.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            DefaultMutableTreeNode newChild = new DefaultMutableTreeNode("Added" + Math.random());
-                            Point p=MouseInfo.getPointerInfo().getLocation();
-                            DefaultMutableTreeNode pathForLocation = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                            if (pathForLocation!=null) pathForLocation.setUserObject(Math.random());
-                            jTree.repaint();
                             menu.setVisible(false);
+                            if (req.showDialog() == 1) {
+                                DefaultMutableTreeNode pathForLocation = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
+                                if (pathForLocation != null) pathForLocation.setUserObject(req.getTaskName());
+                                jTree.repaint();
+                            }
+
                         }
                     });
                     items.add(item);
 
                 }
+
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
                     menu.setVisible(false);
-                    menu=new JPopupMenu();
+                    menu = new JPopupMenu();
                     fillItems();
-                    for (JMenuItem item: items)
+                    for (JMenuItem item : items)
                         menu.add(item);
                     menu.setLocation(MouseInfo.getPointerInfo().getLocation());
                     menu.setVisible(true);
