@@ -6,43 +6,19 @@ import java.io.Serializable;
  * Created by Степан on 11.11.2015.
  */
 public class IDGenerator {
+    private int id;
+    private static IDGenerator instance;
 
-    int id;
+    private IDGenerator() {
+        id = 0;
+    }
 
-        /**
-         * Конструктор
-         *
-         * @param id ID генератора
-         */
-        public IDGenerator(int id) {
-            this.id = id;
-        }
+    public static int getInstance() {
+        if (instance == null) instance = new IDGenerator();
+        return instance.getId();
+    }
 
-        /**
-         * Конструктор
-         */
-        public IDGenerator() {
-            this(0);
-        }
-
-        /**
-         * Получение нового ID
-         *
-         * @return Получение ID
-         */
-        public int getNext() {
-            return id++;
-        }
-
-        /**
-         * Получение ID
-         *
-         * @return Возвращает ID
-         */
-        public int getId() {
-            return id;
-        }
-
-
-
+    public int getId() {
+        return id++;
+    }
 }
