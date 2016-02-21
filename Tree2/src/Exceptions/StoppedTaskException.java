@@ -1,4 +1,4 @@
-package Exñeptions;
+package Exceptions;
 
 /**
  * Created by Ilia Komarov on 04.12.2015.

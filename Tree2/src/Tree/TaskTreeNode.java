@@ -1,7 +1,8 @@
 package Tree;
 
-import Exñeptions.StoppedTaskException;
-import Info.Task;
+import Exceptions.BusyTaskException;
+import Exceptions.StoppedTaskException;
+import Info.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.lang.*;
@@ -24,14 +25,23 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
     }
 
     public Task getTask() {
-        return (Task) userObject;
+        return (Task)userObject;
+    }
+
+    public Info getSimpleInfo()
+    {
+        return getTask().getSimpleInfo();
+    }
+
+    public Info getFullInfo() throws BusyTaskException {
+        return getTask().getFullInfo();
     }
 
     public boolean changeTaskName(String taskname) {
         return getTask().changeName(taskname);
     }
 
-    public long getWorkingTime() throws StoppedTaskException {
+    public long getWorkingTime() throws BusyTaskException {
         long time = getTask().getWorkingTime();
         for (Object child : children) {
             TaskTreeNode node = (TaskTreeNode) child;

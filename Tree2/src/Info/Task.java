@@ -1,12 +1,11 @@
 package Info;
 
-import ExÒeptions.StoppedTaskException;
+import Exceptions.BusyTaskException;
+import Exceptions.StoppedTaskException;
 import Generations.IDGenerator;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by —ÚÂÔ‡Ì on 11.11.2015.
@@ -52,6 +51,10 @@ public class Task  {
         if (stopped) throw new StoppedTaskException();
     }
 
+    public void checkBusy() throws BusyTaskException{
+        if (busy) throw new BusyTaskException();
+    }
+
     public boolean stopTask() throws StoppedTaskException {
         pauseTask();
         stopped = true;
@@ -63,14 +66,25 @@ public class Task  {
         return true;
     }
 
-    public Info getFullInfo() //TODO info
+    public Info getFullInfo() throws BusyTaskException //TODO info
     {
-        return null;
+        long time=getWorkingTime();
+        long ms = time % 1000;
+        time = time / 1000;
+        long sec = time % 60;
+        time= time / 60;
+        long min = time % 60;
+        time = time / 60;
+        long hours = time % 24;
+        time = time / 24;
+        long days = time;
+
+        return new Info(id,name,new Date(creationDate.getTime()).toString(),isBusy(),isStopped(),new String(days+"d "+hours+"h "+min+"m "+sec+"s "+ms+"ms"));
     }
 
     public Info getSimpleInfo() //TODO info
     {
-        return null;
+        return new Info(id,name);
     }
 
     public boolean isBusy() {
@@ -81,8 +95,8 @@ public class Task  {
         return stopped;
     }
 
-    public long getWorkingTime() throws StoppedTaskException {
-        checkStop();
+    public long getWorkingTime() throws BusyTaskException {
+        checkBusy();
         long time = 0;
         for (Date[] d : usingDate) {
             time += d[1].getTime() - d[0].getTime();

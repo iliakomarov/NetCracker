@@ -15,7 +15,6 @@ public class TaskTree extends DefaultTreeModel {
 
     public boolean isBusy(int id)
     {
-
         return true;
     }//сообщение о занятости задачей
     public boolean addTaskByID(int id, String task)
