@@ -22,7 +22,7 @@ public class Task  {
         this.id = IDGenerator.getInstance();
         this.name=name;
         this.busy=this.stopped=false;
-        this.creationDate = new Date(); //TODO проверить дату new Date
+        this.creationDate = new Date();
         this.usingDate=new ArrayList<>();
     }
 
@@ -64,6 +64,11 @@ public class Task  {
     {
         this.name = name;
         return true;
+    }
+
+    public int getId()
+    {
+        return this.id;
     }
 
     public Info getFullInfo() throws BusyTaskException //TODO info
