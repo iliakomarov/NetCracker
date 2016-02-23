@@ -9,6 +9,7 @@ public class Authorization extends JDialog {
     private JButton buttonCancel;
     private JTextField textFieldLogin;
     private JPasswordField passwordPasswordField;
+    private JButton buttonReg;
 
     public Authorization() {
         setTitle("Authorization");
