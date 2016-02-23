@@ -1,11 +1,14 @@
 package Tree;
 
 import Exceptions.BusyTaskException;
+import Exceptions.NoSuchTaskWithIDException;
 import Exceptions.StoppedTaskException;
 import Info.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.lang.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Created by Степан on 11.11.2015.
@@ -18,6 +21,11 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
 
     private TaskTreeNode(String taskName) {
         super(Task.getInstance(taskName));
+    }
+
+    public TaskTreeNode(User user)
+    {
+        super(user);
     }
 
     public static TaskTreeNode getInstance(String taskName) {
@@ -72,6 +80,21 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
 
     public boolean stopTask() throws StoppedTaskException {
         return getTask().stopTask();
+    }
+
+    public TaskTreeNode seekForTaskByID(int info) {
+        Queue q = new LinkedList();
+        q.add(this);
+        while (!q.isEmpty()) {
+            TaskTreeNode n = (TaskTreeNode) q.remove();
+            if (n.getTask().getId() == info) {
+                return n;
+            }
+            for (int i=0;i<n.getChildCount();i++) {
+                q.add(n.getChildAt(i));
+            }
+        }
+        throw new NoSuchTaskWithIDException();
     }
 }
 

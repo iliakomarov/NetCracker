@@ -13,40 +13,16 @@ public class TaskTree extends DefaultTreeModel {
         super(root);
     }
 
-    public boolean isBusy(int id)
-    {
-        return true;
-    }//сообщение о занятости задачей
-    public boolean addTaskByID(int id, String task)
-    {
-        return true;
-    }//добавление задачи
+    public TaskTree(User user) { this(new TaskTreeNode(user)); }
 
-    public boolean deleteNodeByID(int id)
+    public boolean addTask(String taskname)
     {
-        return true;
-    }// удаление узла вместе с подзадачами
-    public boolean changeTaskByID (int id, String newName )
-    {
-        return true;
-    }// изменение задачи по ИД
-    public Info infoByID (int id)
-    {
-        return null;
-    }//вывод информации по ИД
-    //  public Info moreinfoByID(int id);
-    public TaskTree loadTree(String source)
-    {
-        return null;
-    }//
-    public boolean saveTree(String source)
-    {
-        return true;
+        ((TaskTreeNode)this.getRoot()).addSubtask(taskname);
     }
-    public Statistic getStatistic (int id)
-    {
-        return null;
-    }//получение статистики, собранной по ID ????
 
+    public TaskTreeNode seekForTaskByID(int id)
+    {
+        return ((TaskTreeNode)this.getRoot()).seekForTaskByID(id);
+    }
 }
 
