@@ -1,4 +1,6 @@
-package Tree;
+package Tree2.src.Tree;
+
+import Tree2.src.Tree.TaskTree;
 
 /**
  * Created by Ilia Komarov on 23.02.2016.

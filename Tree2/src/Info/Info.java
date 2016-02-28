@@ -1,4 +1,4 @@
-package Info;
+package Tree2.src.Info;
 
 /**
  * Created by Степан on 14.11.2015.

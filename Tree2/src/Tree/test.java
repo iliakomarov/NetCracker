@@ -1,10 +1,9 @@
-package Tree;
+package Tree2.src.Tree;
 
-import Exceptions.StoppedTaskException;
-import Info.Task;
+
+import Tree2.src.Info.Task;
 
 import java.util.Enumeration;
-import java.util.Vector;
 
 /**
  * Created by Ilia Komarov on 14.02.2016.

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE trees PUBLIC "PublicIdentifier" "treesDTD.dtd">
+<trees>
+<tree name="Vlad">
+<treeNode>
+<userObject>Test task!</userObject>
+<allowsChild>true</allowsChild>
+<parent>null</parent>
+</treeNode>
+</tree>
+<tree name="Ilya">
+<treeNode>
+<userObject>root</userObject>
+<allowsChild>true</allowsChild>
+<parent>null</parent>
+</treeNode>
+<treeNode>
+<userObject>1</userObject>
+<allowsChild>true</allowsChild>
+<parent>root</parent>
+</treeNode>
+<treeNode>
+<userObject>2</userObject>
+<allowsChild>true</allowsChild>
+<parent>root</parent>
+</treeNode>
+<treeNode>
+<userObject>3</userObject>
+<allowsChild>true</allowsChild>
+<parent>root</parent>
+</treeNode>
+</tree>
+<tree name="Vlad">
+<treeNode>
+<userObject>Test task!</userObject>
+<allowsChild>true</allowsChild>
+<parent>null</parent>
+</treeNode>
+</tree>
+</trees>

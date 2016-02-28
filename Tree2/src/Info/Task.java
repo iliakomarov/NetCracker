@@ -1,8 +1,8 @@
-package Info;
+package Tree2.src.Info;
 
-import Exceptions.BusyTaskException;
-import Exceptions.StoppedTaskException;
-import Generations.IDGenerator;
+import Tree2.src.Exceptions.BusyTaskException;
+import Tree2.src.Exceptions.StoppedTaskException;
+import Tree2.src.Generations.IDGenerator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ public class Task  {
         if (stopped) throw new StoppedTaskException();
     }
 
-    public void checkBusy() throws BusyTaskException{
+    public void checkBusy() throws BusyTaskException {
         if (busy) throw new BusyTaskException();
     }
 

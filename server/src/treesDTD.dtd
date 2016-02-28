@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!ELEMENT trees (tree*)>
+        <!ELEMENT tree (treeNode*)>
+        <!ELEMENT treeNode (userObject, allowsChild, parent)>
+        <!ELEMENT userObject (#PCDATA)>
+        <!ELEMENT allowsChild (#PCDATA)>
+        <!ELEMENT parent (#PCDATA)>
+
+        <!ATTLIST tree
+                name CDATA #REQUIRED
+                >

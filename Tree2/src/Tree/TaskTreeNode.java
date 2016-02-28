@@ -1,9 +1,11 @@
-package Tree;
+package Tree2.src.Tree;
 
-import Exceptions.BusyTaskException;
-import Exceptions.NoSuchTaskWithIDException;
-import Exceptions.StoppedTaskException;
-import Info.*;
+import Tree2.src.Exceptions.BusyTaskException;
+import Tree2.src.Exceptions.NoSuchTaskWithIDException;
+import Tree2.src.Exceptions.StoppedTaskException;
+import Tree2.src.Info.Info;
+import Tree2.src.Info.Task;
+import sun.reflect.generics.tree.Tree;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.lang.*;
