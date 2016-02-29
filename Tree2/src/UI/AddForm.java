@@ -45,6 +45,7 @@ public class AddForm extends JFrame {
                 logger.info("Client:" + client.toString());
                 logger.info("parent:" + parent);
                 client.addTask(userTask, parent, "Ilya");
+                TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
                 dispose();
             }
         });

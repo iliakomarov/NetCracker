@@ -61,8 +61,9 @@ public class TaskMenu extends JPopupMenu {
                 Client client = TabbedPaneExample.getClient();
                 logger.info("Delete:" + node.getUserObject());
                 client.deleteTask((String)node.getUserObject(), "Ilya");
+                TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
                 //if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
-                //jTree.repaint();
+                jTree.repaint();
             }
         });
         add(item);

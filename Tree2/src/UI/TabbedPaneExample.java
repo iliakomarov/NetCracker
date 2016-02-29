@@ -13,9 +13,9 @@ import javax.swing.tree.*;
 
 public class TabbedPaneExample extends JFrame
 {
-    private	JTabbedPane tabbedPane;
+    private static 	JTabbedPane tabbedPane;
     private JTree tree;
-    private TaskMenu nodeMenu;
+    private static TaskMenu nodeMenu;
     private static client.src.client.Client client = null;
 
     public static client.src.client.Client getClient(){
@@ -30,18 +30,7 @@ public class TabbedPaneExample extends JFrame
 
         client.src.client.Client cl = getClient();
         TaskTree model=new TaskTree(cl.getTree("Ilya"));
-        /*model.addTask("Math");
-        model.addTask("Physics");
-        model.addTask("Programming");
-        model.seekForTaskByID(0).addSubtask("Algebra");
-        model.seekForTaskByID(0).addSubtask("Geometry");
-        model.seekForTaskByID(1).addSubtask("Hydrodynamics");
-        model.seekForTaskByID(1).addSubtask("Electricity");
-        model.seekForTaskByID(1).addSubtask("Mechanics");
-        model.seekForTaskByID(2).addSubtask("Java");
-        model.seekForTaskByID(2).addSubtask("SQL");
-        model.seekForTaskByID(2).addSubtask("C++");
-        model.seekForTaskByID(2).addSubtask("Scilab");*/
+
         //create the tree by passing in the root node
         tree = new JTree(model);
 
@@ -62,20 +51,37 @@ public class TabbedPaneExample extends JFrame
         tree.setBackground(Color.GRAY);
     }
 
+    public static JPanel topPanel = new JPanel();
+
     public TabbedPaneExample()
     {
         setTitle( "Task Tree" );
         setSize( 800, 600 );
         setBackground( Color.gray );
 
-        JPanel topPanel = new JPanel();
+
         topPanel.setLayout( new BorderLayout() );
         getContentPane().add( topPanel );
 
         tabbedPane = new JTabbedPane();
         makeTree();
-        DefaultMutableTreeNode root=(DefaultMutableTreeNode)tree.getModel().getRoot();
+        refreshTree(tree);
+        topPanel.add( tabbedPane, BorderLayout.CENTER );
 
+        /*setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                nodeMenu.setVisible(false);
+                dispose();
+            }
+        });*/
+    }
+
+    public static void refreshTree(JTree tree){
+        if (tabbedPane.getTabCount() > 0) tabbedPane.remove(0);
+
+        DefaultMutableTreeNode root=(DefaultMutableTreeNode)tree.getModel().getRoot();
         for (int i=0;i<root.getChildCount();i++) {
             JPanel panel=new JPanel();
             JTree jTree = new JTree(root.getChildAt(i), true);
@@ -95,16 +101,8 @@ public class TabbedPaneExample extends JFrame
                 }
             });
         }
-        topPanel.add( tabbedPane, BorderLayout.CENTER );
 
-        /*setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                nodeMenu.setVisible(false);
-                dispose();
-            }
-        });*/
+
     }
 
     // Main method to get things started

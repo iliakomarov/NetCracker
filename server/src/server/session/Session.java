@@ -116,6 +116,7 @@ public class Session implements Runnable {
 
                     TreeNode findedTreeNode = TreeLoader.findNode(currTreeNode,addTask.getParent());
                     findedTreeNode.add(new TreeNode(addTask.getUserObject(), true));
+                    currTreeNode = (TreeNode)findedTreeNode.getRoot();
                     TreeLoader.updateTree(currTreeNode, addTask.getName());
 
                     System.out.println(findedTreeNode.getUserObject());
