@@ -86,11 +86,14 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
         Queue q = new LinkedList();
         q.add(this);
         while (!q.isEmpty()) {
-            TaskTreeNode n = (TaskTreeNode) q.remove();
-            if (n.getTask().getId() == info) {
-                return n;
+            DefaultMutableTreeNode n = (DefaultMutableTreeNode)q.remove();
+            if (n instanceof TaskTreeNode) {
+                TaskTreeNode f=(TaskTreeNode)n;
+                if (f.getTask().getId() == info) {
+                    return f;
+                }
             }
-            for (int i=0;i<n.getChildCount();i++) {
+            for (int i = 0; i < n.getChildCount(); i++) {
                 q.add(n.getChildAt(i));
             }
         }

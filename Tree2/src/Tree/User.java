@@ -7,6 +7,10 @@ public class User {
     private String name, surname, login, password;
     private TaskTree privateTree;
 
+    public User()
+    {
+        this("def","def","def","def");
+    }
     public User(String name, String surname, String login, String password) {
         this.name = name;
         this.surname = surname;
