@@ -1,7 +1,8 @@
-package Tree;
+package Tree2.src.Tree;
 
-import Exceptions.NoSuchTaskWithIDException;
-import Info.*;
+
+
+import Tree2.src.Exceptions.NoSuchTaskWithIDException;
 
 import javax.swing.tree.*;
 
@@ -18,7 +19,7 @@ public class TaskTree extends DefaultTreeModel {
 
     public boolean addTask(String taskname)
     {
-        ((MutableTreeNode)this.getRoot()).insert(TaskTreeNode.getInstance(taskname),0);
+        ((MutableTreeNode)this.getRoot()).insert(TaskTreeNode.getInstance(taskname), 0);
         //return ((TaskTreeNode)this.getRoot()).addSubtask(taskname);
         return true;
     }

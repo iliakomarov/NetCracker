@@ -1,10 +1,10 @@
-package UI;
-import Tree.TaskTree;
-import Tree.User;
+package Tree2.src.UI;
+
+import Tree2.src.Tree.TaskTree;
+import Tree2.src.Tree.User;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;

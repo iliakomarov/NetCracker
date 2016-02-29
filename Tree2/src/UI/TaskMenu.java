@@ -1,7 +1,9 @@
-package UI;
+package Tree2.src.UI;
 
-import Exceptions.StoppedTaskException;
-import Tree.TaskTreeNode;
+
+
+import Tree2.src.Exceptions.StoppedTaskException;
+import Tree2.src.Tree.TaskTreeNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
