@@ -62,7 +62,8 @@ public class TaskMenu extends JPopupMenu {
         });
         add(item);
 
-        TaskTreeNode node = (TaskTreeNode) jTree.getLastSelectedPathComponent();
+
+        /*TaskTreeNode node = (TaskTreeNode) jTree.getLastSelectedPathComponent();
         if (node.getTask().isBusy()) {
             item = new JMenuItem("Pause task");
             item.addActionListener(new ActionListener() {
@@ -108,7 +109,7 @@ public class TaskMenu extends JPopupMenu {
                 }
             });
             add(item);
-        }
+        }*/
 
 
 

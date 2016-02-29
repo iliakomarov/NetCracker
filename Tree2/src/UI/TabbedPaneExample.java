@@ -38,6 +38,21 @@ public class TabbedPaneExample extends JFrame
         model.seekForTaskByID(2).addSubtask("Scilab");*/
         //create the tree by passing in the root node
         tree = new JTree(model);
+
+       /* tree.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+                    Rectangle pathBounds = tree.getUI().getPathBounds(tree, path);
+                    if (pathBounds != null && pathBounds.contains(e.getX(), e.getY())) {
+                        JPopupMenu menu = new JPopupMenu();
+                        menu.add(new JMenuItem("Test"));
+                        menu.show(tree, pathBounds.x, pathBounds.y + pathBounds.height);
+                    }
+                }
+            }
+        });*/
+
         tree.setBackground(Color.GRAY);
     }
 
@@ -76,14 +91,14 @@ public class TabbedPaneExample extends JFrame
         }
         topPanel.add( tabbedPane, BorderLayout.CENTER );
 
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        /*setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 nodeMenu.setVisible(false);
                 dispose();
             }
-        });
+        });*/
     }
 
     // Main method to get things started
@@ -92,6 +107,9 @@ public class TabbedPaneExample extends JFrame
         // Create an instance of the test application
         TabbedPaneExample mainFrame	= new TabbedPaneExample();
         mainFrame.pack();
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setLocationRelativeTo ( null );
+        mainFrame.setSize(new Dimension(800, 600));
         mainFrame.setVisible( true );
     }
 }

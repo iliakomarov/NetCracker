@@ -24,16 +24,19 @@ public class RequestTaskName extends JDialog {
     private String taskName;
 
     public RequestTaskName() {
+        contentPane = new JPanel();
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
+        buttonOK = new JButton("OK");
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
         });
 
+        buttonCancel = new JButton("Cancel");
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
