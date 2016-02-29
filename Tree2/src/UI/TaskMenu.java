@@ -4,17 +4,24 @@ package Tree2.src.UI;
 
 import Tree2.src.Exceptions.StoppedTaskException;
 import Tree2.src.Tree.TaskTreeNode;
+import client.src.client.Client;
+import client.src.info.Task;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 /**
  * Created by Ilia Komarov on 28.02.2016.
  */
 public class TaskMenu extends JPopupMenu {
+    private Logger logger = Logger.getLogger("TaskMenu");
+
+    //TODO Refresh tree
 
     public TaskMenu(JTree jTree) {
         RequestTaskName req = new RequestTaskName();
@@ -24,13 +31,22 @@ public class TaskMenu extends JPopupMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                if (req.showDialog() == 1) {
-                    DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(req.getTaskName());
-                    DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
+                //if (req.showDialog() == 1) {
+                    /*DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(req.getTaskName());
+                    DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();*/
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                    if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
-                    jTree.repaint();
-                }
+                    logger.info("Selected node:" + (String)node.getUserObject());
+                    AddForm addForm = new AddForm((String)node.getUserObject());
+                    addForm.pack();
+                    addForm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    addForm.setLocationRelativeTo(null);
+                    addForm.setSize(new Dimension(400, 300));
+                    addForm.setResizable(false);
+                    addForm.setVisible(true);
+                jTree.repaint();
+                    /*if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
+                    */
+                //}
             }
         });
         add(item);
@@ -40,10 +56,13 @@ public class TaskMenu extends JPopupMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
+                //DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
-                jTree.repaint();
+                Client client = TabbedPaneExample.getClient();
+                logger.info("Delete:" + node.getUserObject());
+                client.deleteTask((String)node.getUserObject(), "Ilya");
+                //if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
+                //jTree.repaint();
             }
         });
         add(item);

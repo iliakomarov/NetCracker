@@ -114,7 +114,7 @@ public class Session implements Runnable {
 
                     TreeNode currTreeNode = TreeLoader.loadTree(addTask.getName());
 
-                    TreeNode findedTreeNode = TreeLoader.findNode(currTreeNode, addTask.getParent());
+                    TreeNode findedTreeNode = TreeLoader.findNode(currTreeNode,addTask.getParent());
                     findedTreeNode.add(new TreeNode(addTask.getUserObject(), true));
                     TreeLoader.updateTree(currTreeNode, addTask.getName());
 
@@ -143,10 +143,10 @@ public class Session implements Runnable {
                 try {
 
                     TreeNode currTreeNode = TreeLoader.loadTree(deleteTask.getName());
-
                     TreeNode findedTreeNode = TreeLoader.findNode(currTreeNode, deleteTask.getNodeName());
                     currTreeNode = (TreeNode)findedTreeNode.getParent();
                     currTreeNode.remove(findedTreeNode);
+                    currTreeNode = (TreeNode)currTreeNode.getRoot();
                     TreeLoader.updateTree(currTreeNode, deleteTask.getName());
 
                     System.out.println(findedTreeNode.getUserObject());

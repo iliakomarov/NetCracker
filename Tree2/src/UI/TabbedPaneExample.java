@@ -16,14 +16,20 @@ public class TabbedPaneExample extends JFrame
     private	JTabbedPane tabbedPane;
     private JTree tree;
     private TaskMenu nodeMenu;
+    private static client.src.client.Client client = null;
+
+    public static client.src.client.Client getClient(){
+        if (client == null) return client = new client.src.client.Client();
+        else return client;
+    }
 
     private void makeTree()
     {
 
         //TaskTree model=new TaskTree(new User());
 
-        client.src.client.Client client = new client.src.client.Client();
-        TaskTree model=new TaskTree(client.getTree("Ilya"));
+        client.src.client.Client cl = getClient();
+        TaskTree model=new TaskTree(cl.getTree("Ilya"));
         /*model.addTask("Math");
         model.addTask("Physics");
         model.addTask("Programming");

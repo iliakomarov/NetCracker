@@ -206,16 +206,16 @@ public class TreeLoader {
         return currTree;
     }
 
+    public static TreeNode treeNode = null;
     public static TreeNode findNode(TreeNode root, String userObject){
         if (root.getUserObject().equals(userObject)) return root;
-        TreeNode treeNode = null;
         for (int i = 0; i < root.getChildCount(); i++) {
+            if (treeNode != null && treeNode.getUserObject().equals(userObject)) break;
+            treeNode = (TreeNode) root.getChildAt(i);
 
-            treeNode = (TreeNode)root.getChildAt(i);
-            if (!treeNode.getUserObject().equals(userObject)){
+            if (!treeNode.getUserObject().equals(userObject)) {
                 treeNode = findNode(treeNode, userObject);
             }
-            else return treeNode;
         }
         return treeNode;
     }
