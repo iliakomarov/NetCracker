@@ -1,32 +1,41 @@
-package Tree2.src.Tree;
+package Tree;
 
+import Exceptions.NoSuchTaskWithIDException;
+import Info.*;
 
-
-import sun.reflect.generics.tree.Tree;
-
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.*;
 
 /**
  * Created by Степан on 09.11.2015.
  */
 public class TaskTree extends DefaultTreeModel {
 
-    public TaskTree(TaskTreeNode root) {
+    public TaskTree(DefaultMutableTreeNode root) {
         super(root);
     }
 
-    public TaskTree(User user) { this(new TaskTreeNode(user)); }
+    public TaskTree(User user) { this(new DefaultMutableTreeNode(user)); }
 
     public boolean addTask(String taskname)
     {
-        ((TaskTreeNode)this.getRoot()).addSubtask(taskname);
-
+        ((MutableTreeNode)this.getRoot()).insert(TaskTreeNode.getInstance(taskname),0);
+        //return ((TaskTreeNode)this.getRoot()).addSubtask(taskname);
         return true;
     }
 
     public TaskTreeNode seekForTaskByID(int id)
     {
-        return ((TaskTreeNode)this.getRoot()).seekForTaskByID(id);
+        MutableTreeNode root=(MutableTreeNode)this.getRoot();
+        for (int i=0;i<root.getChildCount(); i++)
+        {
+            TaskTreeNode child= (TaskTreeNode) root.getChildAt(i);
+            try
+            {
+                return child.seekForTaskByID(id);
+            }
+            catch(NoSuchTaskWithIDException ex) {}
+        }
+        throw new NoSuchTaskWithIDException();
     }
 }
 

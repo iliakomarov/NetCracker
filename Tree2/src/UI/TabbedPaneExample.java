@@ -1,4 +1,7 @@
 package UI;
+import Tree.TaskTree;
+import Tree.User;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -11,109 +14,41 @@ public class TabbedPaneExample extends JFrame
 {
     private	JTabbedPane tabbedPane;
     private JTree tree;
-    private JPopupMenu nodeMenu =new JPopupMenu();
-    private RequestTaskName req=new RequestTaskName();
+    private TaskMenu nodeMenu;
 
     private void makeTree()
     {
-        //create the root node
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-        //create the child nodes
-        DefaultMutableTreeNode vegetableNode = new DefaultMutableTreeNode("Vegetables");
-        vegetableNode.add(new DefaultMutableTreeNode("Capsicum"));
-        vegetableNode.add(new DefaultMutableTreeNode("Carrot"));
-        vegetableNode.add(new DefaultMutableTreeNode("Tomato"));
-        vegetableNode.add(new DefaultMutableTreeNode("Potato"));
-
-        DefaultMutableTreeNode fruitNode = new DefaultMutableTreeNode("Fruits");
-        fruitNode.add(new DefaultMutableTreeNode("Banana"));
-        fruitNode.add(new DefaultMutableTreeNode("Mango"));
-        fruitNode.add(new DefaultMutableTreeNode("Apple"));
-        fruitNode.add(new DefaultMutableTreeNode("Grapes"));
-        fruitNode.add(new DefaultMutableTreeNode("Orange"));
-        fruitNode.add(new DefaultMutableTreeNode("Apple"));
-        fruitNode.add(new DefaultMutableTreeNode("Grapes"));
-        fruitNode.add(new DefaultMutableTreeNode("Orange"));
-
-
-        //add the child nodes to the root node
-        root.add(vegetableNode);
-        root.add(fruitNode);
-
+        TaskTree model=new TaskTree(new User());
+        model.addTask("Math");
+        model.addTask("Physics");
+        model.addTask("Programming");
+        model.seekForTaskByID(0).addSubtask("Algebra");
+        model.seekForTaskByID(0).addSubtask("Geometry");
+        model.seekForTaskByID(1).addSubtask("Hydrodynamics");
+        model.seekForTaskByID(1).addSubtask("Electricity");
+        model.seekForTaskByID(1).addSubtask("Mechanics");
+        model.seekForTaskByID(2).addSubtask("Java");
+        model.seekForTaskByID(2).addSubtask("SQL");
+        model.seekForTaskByID(2).addSubtask("C++");
+        model.seekForTaskByID(2).addSubtask("Scilab");
         //create the tree by passing in the root node
-        tree = new JTree(root);
-    }
-
-    private void fillNodeMenuItems(JTree jTree) {
-        ArrayList<JMenuItem> items = new ArrayList<>();
-        nodeMenu.removeAll();
-
-        JMenuItem item = new JMenuItem("Add task");
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nodeMenu.setVisible(false);
-                if (req.showDialog() == 1) {
-                    DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(req.getTaskName());
-                    DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                    if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
-                    jTree.repaint();
-                }
-            }
-        });
-        items.add(item);
-
-        item = new JMenuItem("Remove task");
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nodeMenu.setVisible(false);
-                DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
-                jTree.repaint();
-            }
-        });
-        items.add(item);
-
-        item = new JMenuItem("Start task");
-        items.add(item);
-
-        item = new JMenuItem("Rename task");
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nodeMenu.setVisible(false);
-                if (req.showDialog() == 1) {
-                    DefaultMutableTreeNode pathForLocation = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                    if (pathForLocation != null) pathForLocation.setUserObject(req.getTaskName());
-                    jTree.repaint();
-                }
-
-            }
-        });
-        items.add(item);
-
-        for (JMenuItem it : items)
-            nodeMenu.add(it);
+        tree = new JTree(model);
+        tree.setBackground(Color.GRAY);
     }
 
     public TabbedPaneExample()
     {
-        setTitle( "Tabbed Pane Application" );
-        setSize( 300, 200 );
+        setTitle( "Task Tree" );
+        setSize( 800, 600 );
         setBackground( Color.gray );
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout( new BorderLayout() );
         getContentPane().add( topPanel );
 
-        // Create a tabbed pane
         tabbedPane = new JTabbedPane();
         makeTree();
-        TreeModel model=tree.getModel();
-        TreeNode root=(DefaultMutableTreeNode)model.getRoot();
+        DefaultMutableTreeNode root=(DefaultMutableTreeNode)tree.getModel().getRoot();
 
         for (int i=0;i<root.getChildCount();i++) {
             JPanel panel=new JPanel();
@@ -123,12 +58,12 @@ public class TabbedPaneExample extends JFrame
             panel.add(jTree);
             JScrollPane scrollPane = new JScrollPane();
             scrollPane.setViewportView(panel);
-            tabbedPane.addTab("Page", scrollPane);
+            tabbedPane.addTab("Task", scrollPane);
             jTree.addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
-                    fillNodeMenuItems(jTree);
-                    nodeMenu.setVisible(false);
+                    if (nodeMenu!=null) nodeMenu.setVisible(false);
+                    nodeMenu = new TaskMenu(jTree);
                     nodeMenu.setLocation(MouseInfo.getPointerInfo().getLocation());
                     nodeMenu.setVisible(true);
                 }
