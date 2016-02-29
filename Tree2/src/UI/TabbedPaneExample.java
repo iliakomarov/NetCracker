@@ -2,6 +2,7 @@ package Tree2.src.UI;
 
 import Tree2.src.Tree.TaskTree;
 import Tree2.src.Tree.User;
+import client.Client;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -18,8 +19,12 @@ public class TabbedPaneExample extends JFrame
 
     private void makeTree()
     {
-        TaskTree model=new TaskTree(new User());
-        model.addTask("Math");
+
+        //TaskTree model=new TaskTree(new User());
+
+        client.src.client.Client client = new client.src.client.Client();
+        TaskTree model=new TaskTree(client.getTree("Ilya"));
+        /*model.addTask("Math");
         model.addTask("Physics");
         model.addTask("Programming");
         model.seekForTaskByID(0).addSubtask("Algebra");
@@ -30,7 +35,7 @@ public class TabbedPaneExample extends JFrame
         model.seekForTaskByID(2).addSubtask("Java");
         model.seekForTaskByID(2).addSubtask("SQL");
         model.seekForTaskByID(2).addSubtask("C++");
-        model.seekForTaskByID(2).addSubtask("Scilab");
+        model.seekForTaskByID(2).addSubtask("Scilab");*/
         //create the tree by passing in the root node
         tree = new JTree(model);
         tree.setBackground(Color.GRAY);

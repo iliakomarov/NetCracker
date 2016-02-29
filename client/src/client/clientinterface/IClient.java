@@ -3,7 +3,7 @@ package client.src.client.clientinterface;
 /**
  * Created by Fadeev on 07.11.2015.
  */
-public interface Client {
+public interface IClient {
     boolean logIn(String login, String password);
     boolean logOut(String login);
     void getTree();

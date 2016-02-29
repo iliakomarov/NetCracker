@@ -30,7 +30,7 @@ public class TreeLoader {
     public static void addTree(TreeNode treeNode, String name){
         try {
            Document document =  marshalTree(treeNode, name);
-            FileWriter fileWriter = new FileWriter("C:\\Users\\Fadeev\\IdeaProjects\\SocketServerCracker\\src\\trees.xml", false);
+            FileWriter fileWriter = new FileWriter("server\\src\\trees.xml", false);
 
             toXML(document, fileWriter);
         } catch (ParserConfigurationException e) {
@@ -56,7 +56,7 @@ public class TreeLoader {
         String currentXmlNode = "";
         TreeNode currParent = null;
 
-        Document doc = getDocument("C:\\Users\\Fadeev\\IdeaProjects\\SocketServerCracker\\src\\trees.xml");
+        Document doc = getDocument("server\\src\\trees.xml");
 
         Node trees = doc.getElementsByTagName("trees").item(0);
 
@@ -155,7 +155,7 @@ public class TreeLoader {
     }
 
     public static TreeNode loadTree(String name) throws org.xml.sax.SAXException, IOException, ParserConfigurationException{
-        Document document = getDocument("C:\\Users\\Fadeev\\IdeaProjects\\SocketServerCracker\\src\\trees.xml");
+        Document document = getDocument("server\\src\\trees.xml");
 
         NodeList treeList = document.getElementsByTagName("tree");
         String s = "";
@@ -221,10 +221,10 @@ public class TreeLoader {
     }
 
     public static void updateTree(TreeNode treeNode, String treeName)throws org.xml.sax.SAXException, IOException, ParserConfigurationException{
-        Document document = getDocument("C:\\Users\\Fadeev\\IdeaProjects\\SocketServerCracker\\src\\trees.xml");
+        Document document = getDocument("server\\src\\trees.xml");
         Element root = document.getDocumentElement();
         root.removeChild(findTree(document, treeName));
-        FileWriter fileWriter = new FileWriter("C:\\Users\\Fadeev\\IdeaProjects\\SocketServerCracker\\src\\trees.xml", false);
+        FileWriter fileWriter = new FileWriter("server\\src\\trees.xml", false);
         try {
             toXML(document, fileWriter);
         } catch (TransformerException e) {
