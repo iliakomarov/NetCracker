@@ -9,9 +9,9 @@ public class Main {
 
        /* try {
 
-            TreeNode treeNode = new TreeNode();
-            treeNode.add(new TreeNode());
-            treeNode.add(new TreeNode());
+            TaskTreeNode treeNode = new TaskTreeNode();
+            treeNode.add(new TaskTreeNode());
+            treeNode.add(new TaskTreeNode());
 
             TreeLoader.updateTree(treeNode, "Ilya");
         } catch (SAXException e) {

@@ -6,6 +6,7 @@ import client.src.communications.AddTask;
 import client.src.communications.DeleteTask;
 import client.src.communications.GetTree;
 import client.src.communications.Message;
+import client.src.info.Task;
 import client.src.tree.TreeNode;
 import org.xml.sax.SAXException;
 
@@ -53,8 +54,8 @@ public class Client {
     public Message getResponse() throws IOException{
         String xml = "";
 
-        char startChar = (char)getInputStream().read();
-        char currChar = '.';
+        getInputStream().read();
+        char currChar;
 
         try {
             while ((currChar = (char)getInputStream().read()) != '*')
@@ -183,7 +184,7 @@ public class Client {
     }
 
 
-    public boolean addTask(String userObject, String parent, String treeName){
+    public boolean addTask(Object userObject, Task parent, String treeName){
 
         try {
             sendObject(new Message("addTask"), getOutputStream(), Message.class);
@@ -193,7 +194,7 @@ public class Client {
 
 
         try {
-            sendObject(new AddTask(userObject, parent, treeName, "addTask"), getOutputStream(), AddTask.class);
+            sendObject(new AddTask((Task)userObject, parent, treeName, "addTask"), getOutputStream(), AddTask.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

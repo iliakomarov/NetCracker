@@ -42,7 +42,7 @@ public class TreeNode extends DefaultMutableTreeNode{
     private TreeNode(int id, String taskName)
     {
         this.parentId =id;
-        this.task=Task.newTask(taskName);
+        this.task=Task.getInstance(taskName);
     }
 
     public static TreeNode newTreeNode(int id, String taskName)

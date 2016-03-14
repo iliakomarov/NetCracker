@@ -1,5 +1,6 @@
 package Tree2.src.UI;
 
+import Tree2.src.Info.Task;
 import client.Client;
 import client.src.tree.TreeNode;
 import javafx.stage.Stage;
@@ -21,10 +22,10 @@ public class AddForm extends JFrame {
     private JButton ok;
     private JButton cancel;
     private String userTask;
-    private String parent;
+    private Task parent;
     private Logger logger = Logger.getLogger("AddForm");
 
-    public AddForm(String parent){
+    public AddForm(Task parent){
         this.parent = parent;
 
         userObject = new JTextArea();
@@ -44,7 +45,7 @@ public class AddForm extends JFrame {
                 client.src.client.Client client = TabbedPaneExample.getClient();
                 logger.info("Client:" + client.toString());
                 logger.info("parent:" + parent);
-                client.addTask(userTask, parent, "Ilya");
+                //client.addTask(userTask, parent, "Ilya");
                 TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
                 dispose();
             }

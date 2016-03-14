@@ -1,5 +1,9 @@
 package server.src.communications;
 
+
+import client.src.communications.Message;
+import server.src.info.Task;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,48 +14,56 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AddTask extends Message {
 
     @XmlElement(name = "parent")
-    private String parent;
+    private Task parent;
 
     @XmlElement(name = "userObject")
-    private String userObject;
+    private Task userObject;
 
-    @XmlElement(name = "name")
-    private String name;
+    @XmlElement(name = "treeName")
+    private String treeName;
 
     public AddTask() {
-        this.parent = "root";
-        this.userObject = "root";
+        this.parent = null;
+        this.userObject = Task.getInstance("root");
 
 
     }
 
-    public AddTask(String data, String parent, String name) {
+    public AddTask(Task data, Task parent, String name) {
         this.parent = parent;
         this.userObject = data;
-        this.name = name;
+        this.treeName = name;
     }
 
-    public String getParent() {
+    public AddTask(Task data, Task parent, String name, String message) {
+        this.parent = parent;
+        this.userObject = data;
+        this.treeName = name;
+        super.setMessage(message);
+    }
+
+
+    public Task getParent() {
         return parent;
     }
 
-    public void setParent(String parent) {
+    public void setParent(Task parent) {
         this.parent = parent;
     }
 
-    public String getUserObject() {
+    public Task getUserObject() {
         return userObject;
     }
 
-    public void setUserObject(String userObject) {
+    public void setUserObject(Task userObject) {
         this.userObject = userObject;
     }
 
-    public String getName() {
-        return name;
+    public String getTreeName() {
+        return treeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTreeName(String treeName) {
+        this.treeName = treeName;
     }
 }

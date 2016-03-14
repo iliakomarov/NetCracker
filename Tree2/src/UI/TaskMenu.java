@@ -36,7 +36,7 @@ public class TaskMenu extends JPopupMenu {
                     DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();*/
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
                     logger.info("Selected node:" + (String)node.getUserObject());
-                    AddForm addForm = new AddForm((String)node.getUserObject());
+                    AddForm addForm = new AddForm((Tree2.src.Info.Task)node.getUserObject());
                     addForm.pack();
                     addForm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     addForm.setLocationRelativeTo(null);
