@@ -120,8 +120,8 @@ public class Session implements Runnable {
 
                         TaskTreeNode currTreeNode =null;
 
-                        TaskTree tree = TreeLoader.loadTree("def");
-                        TreeLoader.updateTree(tree, "def");
+                        TaskTree tree = TreeLoader.loadTree("ilya");
+                        TreeLoader.updateTree(tree, "ilya");
                         marshall.marshall(Task.getInstance("root"), System.out, Task.class);
                         TaskTreeNode taskTreeNode = tree.seekForTaskByID(addTask.getParent().getId());
                         TaskTreeNode node = TaskTreeNode.getInstance(addTask.getUserObject().getName());

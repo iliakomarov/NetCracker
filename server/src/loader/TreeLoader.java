@@ -14,10 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,13 +27,20 @@ public class TreeLoader {
     //TODO Loading tree
     //TODO Marshal tree
 
-    public static void addTree(TaskTree treeNode, String name){
+    public static void addTree(TaskTree treeNode,String name , Document document) {
         try {
-           String xmlTree =  marshalTree(treeNode, name);
+            String xmlTree = marshalTree(treeNode, name);
             FileWriter fileWriter = new FileWriter("server\\src\\trees.xml", false);
-
-            fileWriter.append(xmlTree);
-            fileWriter.close();
+            Element node =  DocumentBuilderFactory
+                    .newInstance()
+                    .newDocumentBuilder()
+                    .parse(new ByteArrayInputStream(xmlTree.getBytes()))
+                    .getDocumentElement();
+            Node n = node.cloneNode(true);
+            document.adoptNode(n);
+            document.getDocumentElement().appendChild(n);
+            document.normalize();
+            toXML(document, fileWriter);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -50,7 +54,7 @@ public class TreeLoader {
         }
     }
 
-    public static String marshalTree(TaskTree treeNode, String name) throws ParserConfigurationException, IOException, org.xml.sax.SAXException, TransformerConfigurationException, TransformerException{
+    public static String marshalTree(TaskTree treeNode, String name) throws ParserConfigurationException, IOException, org.xml.sax.SAXException, TransformerConfigurationException, TransformerException {
 
         Marshall marshall = new Marshall();
         StringWriter stringWriter = new StringWriter();
@@ -59,17 +63,17 @@ public class TreeLoader {
         return stringWriter.toString();
     }
 
-    private static void getAllNodes(Node root, ArrayList<String> nodes){
+    private static void getAllNodes(Node root, ArrayList<String> nodes) {
 
         for (int i = 0; i < root.getChildNodes().getLength(); i++) {
-           nodes.add(root.getChildNodes().item(i).toString());
-            if (root.getChildNodes().item(i).getChildNodes().getLength() != 0){
+            nodes.add(root.getChildNodes().item(i).toString());
+            if (root.getChildNodes().item(i).getChildNodes().getLength() != 0) {
                 getAllNodes(root.getChildNodes().item(i), nodes);
             }
         }
     }
 
-    public static void toXML(Document doc, Writer writer) throws IOException, org.xml.sax.SAXException, TransformerConfigurationException, TransformerException{
+    public static void toXML(Document doc, Writer writer) throws IOException, org.xml.sax.SAXException, TransformerConfigurationException, TransformerException {
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
@@ -84,9 +88,7 @@ public class TreeLoader {
     }
 
 
-
-
-    private static Document getDocument(String fileName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException{
+    private static Document getDocument(String fileName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
         f.setIgnoringElementContentWhitespace(true);
         f.setNamespaceAware(true);
@@ -119,17 +121,18 @@ public class TreeLoader {
         String xml = nodeToString(node);
         TaskTree tree = null;
         Marshall marshall = new Marshall();
-        tree = (TaskTree)marshall.unmarshall(xml, TaskTree.class);
+        tree = (TaskTree) marshall.unmarshall(xml, TaskTree.class);
 
         return tree;
     }
 
     private static String s = "";
-    public static Node findTree(NodeList treeList, String name){
+
+    public static Node findTree(NodeList treeList, String name) {
         for (int i = 0; i < treeList.getLength(); i++) {
             NodeList nodeList = treeList.item(i).getChildNodes();
             for (int j = 0; j < nodeList.getLength(); j++) {
-                if (nodeList.item(j).getNodeName().equals("user") && nodeList.item(j).getChildNodes().item(1).getTextContent().equals(name)){
+                if (nodeList.item(j).getNodeName().equals("user") && nodeList.item(j).getChildNodes().item(1).getTextContent().equals(name)) {
                     return treeList.item(i);
                 }
             }
@@ -140,8 +143,9 @@ public class TreeLoader {
     }
 
     public static TaskTreeNode treeNode = null;
-    public static TaskTreeNode findNode(TaskTreeNode root, Task userObject){
-        if (root.getUserObject()== userObject) return root;
+
+    public static TaskTreeNode findNode(TaskTreeNode root, Task userObject) {
+        if (root.getUserObject() == userObject) return root;
         for (int i = 0; i < root.getChildCount(); i++) {
             if (treeNode != null && treeNode.getUserObject() == userObject) break;
             treeNode = (TaskTreeNode) root.getChildAt(i);
@@ -153,11 +157,21 @@ public class TreeLoader {
         return treeNode;
     }
 
-    public static void updateTree(TaskTree treeNode, String treeName)throws org.xml.sax.SAXException, IOException, ParserConfigurationException{
+    public static void updateTree(TaskTree treeNode, String treeName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException {
+        int treeIndex = 0;
         Document document = getDocument("server\\src\\trees.xml");
         NodeList treeList = document.getElementsByTagName("taskTree");
         Node node = findTree(treeList, treeName);
-        document.removeChild(node);
+
+        for (int i = 0; i < treeList.getLength(); i++) {
+            if (treeList.item(i) == node) {
+                treeIndex = i;
+            }
+        }
+
+        Element element = (Element) document.getElementsByTagName("taskTree").item(treeIndex);
+        element.getParentNode().removeChild(element);
+        document.normalize();
         FileWriter fileWriter = new FileWriter("server\\src\\trees.xml", false);
         try {
             toXML(document, fileWriter);
@@ -165,7 +179,7 @@ public class TreeLoader {
             e.printStackTrace();
         }
 
-        addTree(treeNode, treeName);
+        addTree(treeNode, treeName, document);
     }
 
 }
