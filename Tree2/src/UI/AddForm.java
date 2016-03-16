@@ -1,7 +1,7 @@
 package Tree2.src.UI;
 
 import Tree2.src.Info.Task;
-import client.Client;
+import client.src.client.Client;
 import client.src.client.exception.NoSuchUserException;
 import javafx.stage.Stage;
 
@@ -43,7 +43,7 @@ public class AddForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setUserTask(userObject.getText());
-                client.src.client.Client client = TabbedPaneExample.getClient();
+                client.src.client.Client client = Client.getClient();
                 logger.info("Client:" + client.toString());
                 logger.info("parent:" + parent);
                 //client.addTask(userTask, parent, "Ilya");

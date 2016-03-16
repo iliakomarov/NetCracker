@@ -22,23 +22,48 @@ public class Client {
     private static int portNumber = 9999;
     private DataOutputStream outputStream;
     private DataInputStream inputStream;
+    private static Client client;
+    private ConnectionToServer server;
+    private boolean isRefreshGeneralTree;
 
     public Client(){
         Socket clientSocket = null;
 
         try {
             clientSocket = new Socket(hostName, portNumber);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
             inputStream = new DataInputStream(clientSocket.getInputStream());
             outputStream = new DataOutputStream(clientSocket.getOutputStream());
+            this.server = new ConnectionToServer(hostName, portNumber);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Thread refreshGeneralTree = new Thread(){
+            public void run(){
+                while (true){
+                    if (server.isEdit()){
+                        server.setIsEdit(false);
+                        setIsRefreshGeneralTree(true);
+                        System.out.println("!!!!");
+                    }
+                }
+            }
+        };
+
+        //refreshGeneralTree.setDaemon(true);
+        refreshGeneralTree.start();
     }
 
+
+    public static client.src.client.Client getClient() {
+        if (client == null) return client = new client.src.client.Client();
+        else return client;
+    }
 
 
     public DataOutputStream getOutputStream() {
@@ -299,4 +324,11 @@ public class Client {
         return false;
     }
 
+    public boolean isRefreshGeneralTree() {
+        return isRefreshGeneralTree;
+    }
+
+    public void setIsRefreshGeneralTree(boolean isRefreshGeneralTree) {
+        this.isRefreshGeneralTree = isRefreshGeneralTree;
+    }
 }

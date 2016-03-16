@@ -6,6 +6,7 @@ import org.w3c.dom.NodeList;
 import server.src.communications.*;
 import server.src.info.Task;
 import server.src.loader.TreeLoader;
+import server.src.server.HttpServer;
 import server.src.server.Marshall;
 import server.src.server.session.protocols.TTP;
 import server.src.tree.TaskTree;
@@ -96,6 +97,8 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     }
 
+
+
                     try {
 
                         TaskTreeNode currTreeNode = null;
@@ -106,7 +109,12 @@ public class Session implements Runnable {
                         findedNode.add(addTask.getUserObject());
                         TreeLoader.updateTree(tree, addTask.getTreeName());
 
+                        if (addTask.getTreeName().equals("general")){
+                            HttpServer.sendToAll(tree);
+                        }
                         TTP.sendResponse(new Message("ok"), getOutputStream());
+
+
 
                     } catch (IllegalStateException e) {
                         try {
@@ -125,6 +133,7 @@ public class Session implements Runnable {
                     } catch (TransformerException e) {
                         e.printStackTrace();
                     }
+
                 } else if (message.getMessage().equals("deleteTask") && isLogIn) {
                     DeleteTask deleteTask = null;
 

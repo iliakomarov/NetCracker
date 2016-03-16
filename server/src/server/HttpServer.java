@@ -2,9 +2,14 @@ package server.src.server;
 
 
 import server.src.server.session.Session;
+import server.src.server.session.protocols.TTP;
+import server.src.tree.TaskTree;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -13,6 +18,7 @@ import java.util.logging.Logger;
 public class HttpServer {
 
     private static Logger log = Logger.getLogger(HttpServer.class.getName());
+    private static ArrayList<Socket> clients = new ArrayList<>();
     public static void main(String[] args) {
 
         int portNumber = 9999;
@@ -20,12 +26,22 @@ public class HttpServer {
             ServerSocket serverSocket = new ServerSocket(portNumber);
             log.info("Server starting on port " + portNumber);
             while (true) {
-                new Thread(new Session(serverSocket.accept())).start();
+                Socket socket = serverSocket.accept();
+                clients.add(socket);
+                new Thread(new Session(socket)).start();
                 log.info("New client accepted!");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void sendToAll(Object message) throws IOException {
+        if (message.getClass() == TaskTree.class)
+            for (int i = 0; i < clients.size(); i++) {
+                if (i % 2 != 0)
+                TTP.sendObject(message, new DataOutputStream(clients.get(i).getOutputStream()), TaskTree.class);
+            }
     }
 
     public void start(){

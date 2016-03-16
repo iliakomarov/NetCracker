@@ -1,7 +1,10 @@
 package Tree2.src.UI;
 
+import client.src.client.Client;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class Authorization extends JDialog {
     private JPanel contentPane;
@@ -12,6 +15,9 @@ public class Authorization extends JDialog {
     private JButton buttonReg;
 
     public Authorization() {
+
+
+
         setTitle("Authorization");
         setContentPane(contentPane);
         setModal(true);
@@ -47,6 +53,12 @@ public class Authorization extends JDialog {
 
     private void onOK() {
 // add your code here
+        String login = textFieldLogin.getText();
+        String password = passwordPasswordField.getText();
+        Client client = Client.getClient();
+        if (client.LogIn(login, password)){
+
+        }
         dispose();//TODO client
     }
 

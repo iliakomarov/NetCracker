@@ -60,7 +60,7 @@ public class TaskMenu extends JPopupMenu {
                 setVisible(false);
                 //DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
-                Client client = TabbedPaneExample.getClient();
+                Client client = Client.getClient();
                 logger.info("Delete:" + node.getUserObject());
                 try {
                     client.deleteTask(0, "Ilya");

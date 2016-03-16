@@ -2,7 +2,8 @@ package Tree2.src.UI;
 
 import Tree2.src.Tree.TaskTree;
 import Tree2.src.Tree.User;
-import client.Client;
+import client.src.client.Client;
+import client.src.client.exception.NoSuchUserException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -17,23 +18,27 @@ public class TabbedPaneExample extends JFrame {
     private JTree tree;
     private static TaskMenu nodeMenu;
     private static client.src.client.Client client = null;
+    private static TabbedPaneExample tabbedPaneExample = null;
 
-    public static client.src.client.Client getClient() {
-        if (client == null) return client = new client.src.client.Client();
-        else return client;
-    }
+
 
     private void makeTree() throws IOException {
 
         //TaskTree model=new TaskTree(new User());
 
-        client.src.client.Client cl = getClient();
-        //TaskTree model = cl.getTree("Ilya");
+        client.src.client.Client cl = Client.getClient();
+        client.src.tree.TaskTree model = null;
+        try {
+            cl.LogIn("d", "def");
+            model = cl.getTree("general");
+        } catch (NoSuchUserException e) {
+            e.printStackTrace();
+        }
 
         //create the tree by passing in the root node
-        //tree = new JTree(model);
+        tree = new JTree(model);
 
-       /* tree.addMouseListener(new MouseAdapter() {
+            tree.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     TreePath path = tree.getPathForLocation(e.getX(), e.getY());
@@ -45,8 +50,8 @@ public class TabbedPaneExample extends JFrame {
                     }
                 }
             }
-        });*/
-
+        });
+        refreshTree(tree);
         tree.setBackground(Color.GRAY);
     }
 
@@ -66,15 +71,17 @@ public class TabbedPaneExample extends JFrame {
         refreshTree(tree);
         topPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        /*setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 nodeMenu.setVisible(false);
                 dispose();
             }
-        });*/
+        });
     }
+
+
 
     public static void refreshTree(JTree tree) {
         if (tabbedPane.getTabCount() > 0) tabbedPane.remove(0);
