@@ -6,33 +6,32 @@ import client.Client;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 
-public class TabbedPaneExample extends JFrame
-{
-    private static 	JTabbedPane tabbedPane;
+public class TabbedPaneExample extends JFrame {
+    private static JTabbedPane tabbedPane;
     private JTree tree;
     private static TaskMenu nodeMenu;
     private static client.src.client.Client client = null;
 
-    public static client.src.client.Client getClient(){
+    public static client.src.client.Client getClient() {
         if (client == null) return client = new client.src.client.Client();
         else return client;
     }
 
-    private void makeTree()
-    {
+    private void makeTree() throws IOException {
 
         //TaskTree model=new TaskTree(new User());
 
         client.src.client.Client cl = getClient();
-        TaskTree model=new TaskTree(cl.getTree("Ilya"));
+        //TaskTree model = cl.getTree("Ilya");
 
         //create the tree by passing in the root node
-        tree = new JTree(model);
+        //tree = new JTree(model);
 
        /* tree.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -53,20 +52,19 @@ public class TabbedPaneExample extends JFrame
 
     public static JPanel topPanel = new JPanel();
 
-    public TabbedPaneExample()
-    {
-        setTitle( "Task Tree" );
-        setSize( 800, 600 );
-        setBackground( Color.gray );
+    public TabbedPaneExample() throws IOException {
+        setTitle("Task Tree");
+        setSize(800, 600);
+        setBackground(Color.gray);
 
 
-        topPanel.setLayout( new BorderLayout() );
-        getContentPane().add( topPanel );
+        topPanel.setLayout(new BorderLayout());
+        getContentPane().add(topPanel);
 
         tabbedPane = new JTabbedPane();
         makeTree();
         refreshTree(tree);
-        topPanel.add( tabbedPane, BorderLayout.CENTER );
+        topPanel.add(tabbedPane, BorderLayout.CENTER);
 
         /*setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -78,12 +76,12 @@ public class TabbedPaneExample extends JFrame
         });*/
     }
 
-    public static void refreshTree(JTree tree){
+    public static void refreshTree(JTree tree) {
         if (tabbedPane.getTabCount() > 0) tabbedPane.remove(0);
 
-        DefaultMutableTreeNode root=(DefaultMutableTreeNode)tree.getModel().getRoot();
-        for (int i=0;i<root.getChildCount();i++) {
-            JPanel panel=new JPanel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+        for (int i = 0; i < root.getChildCount(); i++) {
+            JPanel panel = new JPanel();
             JTree jTree = new JTree(root.getChildAt(i), true);
             jTree.setLocation(panel.getLocation());
             panel.setLayout(new FlowLayout(0));
@@ -94,7 +92,7 @@ public class TabbedPaneExample extends JFrame
             jTree.addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
-                    if (nodeMenu!=null) nodeMenu.setVisible(false);
+                    if (nodeMenu != null) nodeMenu.setVisible(false);
                     nodeMenu = new TaskMenu(jTree);
                     nodeMenu.setLocation(MouseInfo.getPointerInfo().getLocation());
                     nodeMenu.setVisible(true);
@@ -106,14 +104,13 @@ public class TabbedPaneExample extends JFrame
     }
 
     // Main method to get things started
-    public static void main( String args[] )
-    {
+    public static void main(String args[]) throws IOException {
         // Create an instance of the test application
-        TabbedPaneExample mainFrame	= new TabbedPaneExample();
+        TabbedPaneExample mainFrame = new TabbedPaneExample();
         mainFrame.pack();
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mainFrame.setLocationRelativeTo ( null );
+        mainFrame.setLocationRelativeTo(null);
         mainFrame.setSize(new Dimension(800, 600));
-        mainFrame.setVisible( true );
+        mainFrame.setVisible(true);
     }
 }

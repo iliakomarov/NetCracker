@@ -6,12 +6,13 @@ import client.src.communications.AddTask;
 import client.src.communications.DeleteTask;
 import client.src.communications.GetTree;
 import client.src.communications.Message;
-import client.src.info.Task;
-import client.src.tree.TreeNode;
+import client.src.tree.TaskTree;
+import client.src.tree.TaskTreeNode;
 import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.Socket;
 
@@ -121,9 +122,9 @@ public class Client {
         }
 
         Marshall marshall = new Marshall();
-        TreeNode object = null;
+        Object object = null;
         try {
-            object =(TreeNode) marshall.unmarshall(xml, aClass);
+            object = marshall.unmarshall(xml, aClass);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -139,7 +140,7 @@ public class Client {
     }
 
 
-    public TreeNode getTree(String name){
+    public TaskTree getTree(String name) throws IOException {
 
         try {
             sendObject(new GetTree(name, "getTree"), getOutputStream(), Message.class);
@@ -155,36 +156,21 @@ public class Client {
 
         Message response = null;
         try {
-            response = (Message) getResponse();
+            response =  getResponse();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        TreeNode treeNode = null;
-        if (response.getMessage().equals("ok")){
-            try {
-                updateTrees();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            treeNode = TreeLoader.loadTree(name, "C:\\Users\\Fadeev\\IdeaProjects\\SocketClientCracker\\trees.xml");
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
+        TaskTree tree = (TaskTree)getObject(TaskTree.class);
+        TaskTreeNode treeNode = null;
 
 
-        return treeNode;
+
+        return tree;
     }
 
 
-    public boolean addTask(Object userObject, Task parent, String treeName){
+    public boolean addTask(TaskTreeNode userObject, int id, String treeName){
 
         try {
             sendObject(new Message("addTask"), getOutputStream(), Message.class);
@@ -194,7 +180,7 @@ public class Client {
 
 
         try {
-            sendObject(new AddTask((Task)userObject, parent, treeName, "addTask"), getOutputStream(), AddTask.class);
+            sendObject(new AddTask(userObject, id, treeName, "addTask"), getOutputStream(), AddTask.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -212,7 +198,7 @@ public class Client {
         return false;
     }
 
-    public boolean deleteTask(String nodeName, String treeName){
+    public boolean deleteTask(int id, String treeName){
         try {
             sendObject(new Message("deleteTask"), getOutputStream(), Message.class);
         } catch (IOException e) {
@@ -221,7 +207,7 @@ public class Client {
 
 
         try {
-            sendObject(new DeleteTask(nodeName, treeName, "deleteTask"), getOutputStream(), DeleteTask.class);
+            sendObject(new DeleteTask(id, treeName, "deleteTask"), getOutputStream(), DeleteTask.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

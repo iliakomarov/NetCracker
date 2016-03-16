@@ -3,6 +3,7 @@ package client.src.communications;
 
 
 import client.src.info.Task;
+import client.src.tree.TaskTreeNode;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,49 +14,40 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AddTask extends Message {
 
-    @XmlElement(name = "parent")
-    private Task parent;
+    @XmlElement(name = "id")
+    private int id;
 
     @XmlElement(name = "userObject")
-    private Task userObject;
+    private TaskTreeNode userObject;
 
     @XmlElement(name = "treeName")
     private String treeName;
 
     public AddTask() {
-        this.parent = null;
-        this.userObject = Task.getInstance("root");
+        this.userObject = TaskTreeNode.getInstance("root");
 
 
     }
 
-    public AddTask(Task data, Task parent, String name) {
-        this.parent = parent;
+    public AddTask(TaskTreeNode data, int id, String name) {
         this.userObject = data;
         this.treeName = name;
+        this.id = id;
     }
 
-    public AddTask(Task data, Task parent, String name, String message) {
-        this.parent = parent;
+    public AddTask(TaskTreeNode data, int id, String name, String message) {
         this.userObject = data;
         this.treeName = name;
+        this.id = id;
         super.setMessage(message);
     }
 
 
-    public Task getParent() {
-        return parent;
-    }
-
-    public void setParent(Task parent) {
-        this.parent = parent;
-    }
-
-    public Task getUserObject() {
+    public TaskTreeNode getUserObject() {
         return userObject;
     }
 
-    public void setUserObject(Task userObject) {
+    public void setUserObject(TaskTreeNode userObject) {
         this.userObject = userObject;
     }
 
@@ -65,5 +57,13 @@ public class AddTask extends Message {
 
     public void setTreeName(String treeName) {
         this.treeName = treeName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -16,7 +16,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Fadeev on 21.11.2015.
@@ -88,7 +87,7 @@ public class TreeLoader {
     }
 
 
-    private static Document getDocument(String fileName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException {
+    public static Document getDocument(String fileName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
         f.setIgnoringElementContentWhitespace(true);
         f.setNamespaceAware(true);
@@ -117,7 +116,7 @@ public class TreeLoader {
 
         NodeList treeList = document.getElementsByTagName("taskTree");
         TaskTreeNode root = null;
-        Node node = findTree(treeList, name);
+        Node node = findTreeByUserName(treeList, name);
         String xml = nodeToString(node);
         TaskTree tree = null;
         Marshall marshall = new Marshall();
@@ -128,11 +127,26 @@ public class TreeLoader {
 
     private static String s = "";
 
-    public static Node findTree(NodeList treeList, String name) {
+    public static Node findTreeByUserName(NodeList treeList, String name) {
         for (int i = 0; i < treeList.getLength(); i++) {
             NodeList nodeList = treeList.item(i).getChildNodes();
             for (int j = 0; j < nodeList.getLength(); j++) {
                 if (nodeList.item(j).getNodeName().equals("user") && nodeList.item(j).getChildNodes().item(1).getTextContent().equals(name)) {
+                    return treeList.item(i);
+                }
+            }
+        }
+
+
+        return null;
+    }
+
+
+    public static Node findTreeByUserLogin(NodeList treeList, String logIn) {
+        for (int i = 0; i < treeList.getLength(); i++) {
+            NodeList nodeList = treeList.item(i).getChildNodes();
+            for (int j = 0; j < nodeList.getLength(); j++) {
+                if (nodeList.item(j).getNodeName().equals("user") && nodeList.item(j).getChildNodes().item(5).getTextContent().equals(logIn)) {
                     return treeList.item(i);
                 }
             }
@@ -161,7 +175,7 @@ public class TreeLoader {
         int treeIndex = 0;
         Document document = getDocument("server\\src\\trees.xml");
         NodeList treeList = document.getElementsByTagName("taskTree");
-        Node node = findTree(treeList, treeName);
+        Node node = findTreeByUserName(treeList, treeName);
 
         for (int i = 0; i < treeList.getLength(); i++) {
             if (treeList.item(i) == node) {

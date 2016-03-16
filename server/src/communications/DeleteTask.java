@@ -11,39 +11,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DeleteTask extends Message {
-    @XmlElement(name = "nodeName")
-    private String nodeName;
+    @XmlElement(name = "id")
+    private int id;
 
+    @XmlElement(name = "treeName")
+    private String treeName;
 
-    @XmlElement(name = "name")
-    private String name;
+    public DeleteTask(){}
 
-    public DeleteTask() {
-        this.nodeName = "root";
-
-    }
-
-    public DeleteTask(String nodeName, String name, String message) {
-        this.nodeName = nodeName;
-        this.name = name;
+    public DeleteTask(int id, String treeName, String message) {
+        this.id = id;
+        this.treeName = treeName;
         super.setMessage(message);
     }
 
-
-    public String getNodeName() {
-        return nodeName;
+    public int getId() {
+        return id;
     }
 
-    public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-
-    public String getName() {
-        return name;
+    public String getTreeName() {
+        return treeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTreeName(String treeName) {
+        this.treeName = treeName;
     }
 }

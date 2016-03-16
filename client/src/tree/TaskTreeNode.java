@@ -1,14 +1,16 @@
-package server.src.tree;
+package client.src.tree;
 
 
 
 
 
-import server.src.Exceptions.BusyTaskException;
-import server.src.Exceptions.NoSuchTaskWithIDException;
-import server.src.Exceptions.StoppedTaskException;
-import server.src.info.Info;
-import server.src.info.Task;
+
+
+import Tree2.src.Exceptions.BusyTaskException;
+import Tree2.src.Exceptions.NoSuchTaskWithIDException;
+import Tree2.src.Exceptions.StoppedTaskException;
+import client.src.info.Info;
+import client.src.info.Task;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -40,7 +42,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
 
     }
 
-    public TaskTreeNode(User user)
+    public TaskTreeNode(client.src.tree.User user)
     {
         super(user);
     }
@@ -64,7 +66,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         return getTask().getSimpleInfo();
     }
 
-    public Info getFullInfo() throws BusyTaskException, server.src.Exceptions.BusyTaskException {
+    public Info getFullInfo() throws BusyTaskException, BusyTaskException {
         return getTask().getFullInfo();
     }
 
@@ -75,7 +77,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         return getTask().changeName(taskname);
     }
 
-    public long getWorkingTime() throws BusyTaskException, server.src.Exceptions.BusyTaskException {
+    public long getWorkingTime() throws BusyTaskException, BusyTaskException {
         long time = getTask().getWorkingTime();
         for (Object child : children) {
             TaskTreeNode node = (TaskTreeNode) child;
@@ -113,7 +115,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         q.add(this);
         while (!q.isEmpty()) {
             DefaultMutableTreeNode n = (DefaultMutableTreeNode)q.remove();
-            if (n instanceof TaskTreeNode) {
+            if (n instanceof server.src.tree.TaskTreeNode) {
                 TaskTreeNode f=(TaskTreeNode)n;
                 if (f.getTask().getId() == info) {
                     return f;
@@ -125,7 +127,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         }
         throw new NoSuchTaskWithIDException();
     }
-    public void setParent(TaskTreeNode parent) {
+    public void setParent(server.src.tree.TaskTreeNode parent) {
         this.parent = parent;
     }
 

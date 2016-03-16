@@ -2,7 +2,6 @@ package Tree2.src.UI;
 
 import Tree2.src.Info.Task;
 import client.Client;
-import client.src.tree.TreeNode;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -10,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -46,7 +46,11 @@ public class AddForm extends JFrame {
                 logger.info("Client:" + client.toString());
                 logger.info("parent:" + parent);
                 //client.addTask(userTask, parent, "Ilya");
-                TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
+                try {
+                    TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 dispose();
             }
         });

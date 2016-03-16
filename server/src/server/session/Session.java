@@ -1,6 +1,8 @@
 package server.src.server.session;
 
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import server.src.communications.AddTask;
 import server.src.communications.DeleteTask;
 import server.src.communications.GetTree;
@@ -33,6 +35,8 @@ public class Session implements Runnable {
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
     private TaskTree treeNode;
+    private String currUser;
+    private boolean isLogIn;
 
     public Session(Socket socket) throws IOException {
         this.socket = socket;
@@ -72,6 +76,9 @@ public class Session implements Runnable {
 
                     try {
                         treeNode = TreeLoader.loadTree(getTree.getNameTree());
+                        TTP.sendResponse(new Message("ok"), getOutputStream());
+                        TTP.sendObject(treeNode, getOutputStream(), TaskTree.class);
+
                     } catch (SAXException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -84,29 +91,6 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     }
 
-                    /*try {
-
-                        Document document = TreeLoader.marshalTree(treeNode, getTree.getNameTree());
-
-                        StringWriter stringWriter = new StringWriter();
-                       TreeLoader.toXML(document, stringWriter);
-
-
-                        TTP.sendResponse(message, getOutputStream());
-                        getOutputStream().write(stringWriter.toString().getBytes());
-                        getOutputStream().write('*');
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    } catch (TransformerConfigurationException e) {
-                        e.printStackTrace();
-                    } catch (TransformerException e) {
-                        e.printStackTrace();
-                    }*/
-
 
                 } else if (message.getMessage().equals("addTask")) {
                     AddTask addTask = null;
@@ -118,23 +102,13 @@ public class Session implements Runnable {
 
                     try {
 
-                        TaskTreeNode currTreeNode =null;
+                        TaskTreeNode currTreeNode = null;
 
-                        TaskTree tree = TreeLoader.loadTree("ilya");
-                        TreeLoader.updateTree(tree, "ilya");
-                        marshall.marshall(Task.getInstance("root"), System.out, Task.class);
-                        TaskTreeNode taskTreeNode = tree.seekForTaskByID(addTask.getParent().getId());
-                        TaskTreeNode node = TaskTreeNode.getInstance(addTask.getUserObject().getName());
-                        node.setUserObject(addTask.getUserObject());
-                        taskTreeNode.add(node);
-
-                        TaskTreeNode findedTreeNode = TreeLoader.findNode(currTreeNode, addTask.getParent());
-                        findedTreeNode.add(TaskTreeNode.getInstance(addTask.getUserObject().toString()));
-                        currTreeNode = (TaskTreeNode) findedTreeNode.getRoot();
-
-
-
-                        System.out.println(findedTreeNode.getUserObject());
+                        TaskTree tree = TreeLoader.loadTree(addTask.getTreeName());
+                        TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(addTask.getId());
+                        addTask.getUserObject().setParentID(addTask.getId());
+                        findedNode.add(addTask.getUserObject());
+                        TreeLoader.updateTree(tree, addTask.getTreeName());
 
                         TTP.sendResponse(new Message("ok"), getOutputStream());
 
@@ -160,17 +134,14 @@ public class Session implements Runnable {
 
                     deleteTask = (DeleteTask) TTP.getObject(getInputStream(), DeleteTask.class);
 
-                    /*try {
+                    try {
 
-                        TaskTree currTreeNode = TreeLoader.loadTree(deleteTask.getName());
-                        TaskTreeNode findedTreeNode = TreeLoader.findNode(currTreeNode, Task.getInstance("root"));
-                        currTreeNode = (TaskTreeNode) findedTreeNode.getParent();
-                        currTreeNode.remove(findedTreeNode);
-                        currTreeNode = (TaskTreeNode) currTreeNode.getRoot();
-                        TreeLoader.updateTree(currTreeNode, deleteTask.getName());
-
-                        System.out.println(findedTreeNode.getUserObject());
-
+                        TaskTree tree = TreeLoader.loadTree(deleteTask.getTreeName());
+                        TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(deleteTask.getId());
+                        TaskTreeNode parent = tree.getRoot().seekForTaskByID(findedNode.getParentID());
+                        findedNode.setParent(parent);
+                        parent.remove(findedNode);
+                        TreeLoader.updateTree(tree, deleteTask.getTreeName());
                         TTP.sendResponse(new Message("ok"), getOutputStream());
 
                     } catch (IllegalStateException e) {
@@ -189,15 +160,15 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     } catch (JAXBException e) {
                         e.printStackTrace();
-                    }*/
+                    }
 
                 }
 
-                    System.out.println(message.getMessage());
+                System.out.println(message.getMessage());
                 message = null;
             }
         } catch (IOException e) {
-           //e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }
@@ -209,5 +180,21 @@ public class Session implements Runnable {
 
     public DataOutputStream getOutputStream() {
         return this.outputStream;
+    }
+
+    public String getCurrUser() {
+        return currUser;
+    }
+
+    public void setCurrUser(String currUser) {
+        this.currUser = currUser;
+    }
+
+    public boolean isLogIn() {
+        return isLogIn;
+    }
+
+    public void setIsLogIn(boolean isLogIn) {
+        this.isLogIn = isLogIn;
     }
 }

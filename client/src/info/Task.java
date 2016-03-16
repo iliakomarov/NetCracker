@@ -87,7 +87,7 @@ public class Task {
         return this.id;
     }
 
-    public Tree2.src.Info.Info getFullInfo() throws BusyTaskException //TODO info
+    public client.src.info.Info getFullInfo() throws BusyTaskException //TODO info
     {
         long time=getWorkingTime();
         long ms = time % 1000;
@@ -100,12 +100,12 @@ public class Task {
         time = time / 24;
         long days = time;
 
-        return new Tree2.src.Info.Info(id,name,new Date(creationDate.getTime()).toString(),isBusy(),isStopped(),new String(days+"d "+hours+"h "+min+"m "+sec+"s "+ms+"ms"));
+        return new client.src.info.Info(id,name,new Date(creationDate.getTime()).toString(),isBusy(),isStopped(),new String(days+"d "+hours+"h "+min+"m "+sec+"s "+ms+"ms"));
     }
 
-    public Tree2.src.Info.Info getSimpleInfo() //TODO info
+    public client.src.info.Info getSimpleInfo() //TODO info
     {
-        return new Info(id,name);
+        return new client.src.info.Info(id,name);
     }
 
     public boolean isBusy() {

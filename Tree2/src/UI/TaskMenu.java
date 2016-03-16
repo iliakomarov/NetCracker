@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -60,8 +61,12 @@ public class TaskMenu extends JPopupMenu {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
                 Client client = TabbedPaneExample.getClient();
                 logger.info("Delete:" + node.getUserObject());
-                client.deleteTask((String)node.getUserObject(), "Ilya");
-                TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
+                client.deleteTask(0, "Ilya");
+                try {
+                    TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 //if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
                 jTree.repaint();
             }
