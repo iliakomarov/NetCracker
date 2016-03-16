@@ -1,6 +1,7 @@
 package client.src.client;
 
 
+import client.src.client.exception.NoSuchUserException;
 import client.src.client.loader.TreeLoader;
 import client.src.communications.*;
 import client.src.tree.TaskTree;
@@ -137,7 +138,7 @@ public class Client {
     }
 
 
-    public TaskTree getTree(String name) throws IOException {
+    public TaskTree getTree(String name) throws IOException, NoSuchUserException {
 
         try {
             sendObject(new GetTree(name, "getTree"), getOutputStream(), Message.class);
@@ -157,17 +158,18 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        TaskTree tree = (TaskTree)getObject(TaskTree.class);
-        TaskTreeNode treeNode = null;
-
-
+        TaskTree tree = null;
+        if (!response.getMessage().equals("User not found!")){
+            tree = (TaskTree)getObject(TaskTree.class);
+        }else {
+            throw new NoSuchUserException("User not exist or request has wrong data!");
+        }
 
         return tree;
     }
 
 
-    public boolean addTask(TaskTreeNode userObject, int id, String treeName){
+    public boolean addTask(TaskTreeNode userObject, int id, String treeName) throws NoSuchUserException {
 
         try {
             sendObject(new Message("addTask"), getOutputStream(), Message.class);
@@ -189,13 +191,17 @@ public class Client {
             e.printStackTrace();
         }
 
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
+        }
+
         if (message.getMessage().equals("ok")){
                 return true;
         }
         return false;
     }
 
-    public boolean deleteTask(int id, String treeName){
+    public boolean deleteTask(int id, String treeName) throws NoSuchUserException {
         try {
             sendObject(new Message("deleteTask"), getOutputStream(), Message.class);
         } catch (IOException e) {
@@ -214,6 +220,10 @@ public class Client {
             message = getResponse();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
         }
 
         if (message.getMessage().equals("ok")){
@@ -256,6 +266,37 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean Registration(String name, String surname, String login, String password) throws NoSuchUserException {
+        try {
+            sendObject(new Message("registration"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            sendObject(new Registration(name, surname, login, password, "registration"), getOutputStream(), Registration.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Message message = null;
+        try {
+            message = getResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
+        }
+
+        if (message.getMessage().equals("ok")){
+            return true;
+        }
+        return false;
     }
 
 }

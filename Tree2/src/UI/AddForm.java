@@ -2,6 +2,7 @@ package Tree2.src.UI;
 
 import Tree2.src.Info.Task;
 import client.Client;
+import client.src.client.exception.NoSuchUserException;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -49,6 +50,8 @@ public class AddForm extends JFrame {
                 try {
                     TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
                 } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchUserException e1) {
                     e1.printStackTrace();
                 }
                 dispose();

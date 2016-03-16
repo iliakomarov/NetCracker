@@ -117,4 +117,15 @@ public class User {
     }
 
 
+    public static boolean Registration(String name, String surname, String login, String password) throws ParserConfigurationException, SAXException, IOException {
+        TaskTree tree = new TaskTree(TaskTreeNode.getInstance("root"));
+        User user = new User(name, surname, login, password);
+        tree.setUser(user);
+        Document document = TreeLoader.getDocument("server\\src\\trees.xml");
+        TreeLoader.addTree(tree, name, document);
+
+        return true;
+    }
+
+
 }

@@ -57,4 +57,42 @@
         <password>def</password>
     </user>
 </taskTree>
+<taskTree>
+    <taskTreeNode>
+        <allowsChildren>true</allowsChildren>
+        <userObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="task">
+            <id>0</id>
+            <name>root</name>
+            <busy>false</busy>
+            <stopped>false</stopped>
+            <creationDate>2016-03-16T21:10:54.314+04:00</creationDate>
+        </userObject>
+        <parentID>0</parentID>
+    </taskTreeNode>
+    <user>
+        <name>ilya</name>
+        <surname>sur</surname>
+        <login>admin</login>
+        <password>123</password>
+    </user>
+</taskTree>
+<taskTree>
+    <taskTreeNode>
+        <allowsChildren>true</allowsChildren>
+        <userObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="task">
+            <id>0</id>
+            <name>root</name>
+            <busy>false</busy>
+            <stopped>false</stopped>
+            <creationDate>2016-03-16T21:13:09.282+04:00</creationDate>
+        </userObject>
+        <parentID>0</parentID>
+    </taskTreeNode>
+    <user>
+        <name>a</name>
+        <surname>a</surname>
+        <login>a</login>
+        <password>a</password>
+    </user>
+</taskTree>
 </TaskTrees>

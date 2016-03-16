@@ -5,6 +5,7 @@ package Tree2.src.UI;
 import Tree2.src.Exceptions.StoppedTaskException;
 import Tree2.src.Tree.TaskTreeNode;
 import client.src.client.Client;
+import client.src.client.exception.NoSuchUserException;
 import client.src.info.Task;
 
 import javax.swing.*;
@@ -61,10 +62,16 @@ public class TaskMenu extends JPopupMenu {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree.getLastSelectedPathComponent();
                 Client client = TabbedPaneExample.getClient();
                 logger.info("Delete:" + node.getUserObject());
-                client.deleteTask(0, "Ilya");
+                try {
+                    client.deleteTask(0, "Ilya");
+                } catch (NoSuchUserException e1) {
+                    e1.printStackTrace();
+                }
                 try {
                     TabbedPaneExample.refreshTree(new JTree(client.getTree("Ilya")));
                 } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchUserException e1) {
                     e1.printStackTrace();
                 }
                 //if (node != null && node.getParent() != null) model.removeNodeFromParent(node);

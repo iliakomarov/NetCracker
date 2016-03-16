@@ -88,7 +88,6 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     }
 
-
                 } else if (message.getMessage().equals("addTask") && isLogIn) {
                     AddTask addTask = null;
                     try {
@@ -179,6 +178,20 @@ public class Session implements Runnable {
                 }else if (message.getMessage().equals("logout") && isLogIn){
                     setCurrUser("");
                     setIsLogIn(false);
+                }else if (message.getMessage().equals("registration") && !isLogIn()){
+                    Registration registration = (Registration)TTP.getObject(getInputStream(), Registration.class);
+                    try {
+                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    }
+
+                    TTP.sendResponse(new Message("fail"), getOutputStream());
+                }
+                else if (!isLogIn){
+                    TTP.sendResponse(new Message("User not found!"), getOutputStream());
                 }
 
                 System.out.println(message.getMessage());
