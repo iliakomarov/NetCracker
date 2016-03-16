@@ -13,6 +13,7 @@
 
 
 
+
 <taskTree>
     <taskTreeNode>
         <allowsChildren>true</allowsChildren>
@@ -46,19 +47,6 @@
                     <creationDate>2016-03-16T02:09:39.697+04:00</creationDate>
                 </userObject>
                 <parentID>1</parentID>
-                <children>
-                    <child xsi:type="taskTreeNode">
-                        <allowsChildren>true</allowsChildren>
-                        <userObject xsi:type="task">
-                            <id>0</id>
-                            <name>Test test test test task from client!</name>
-                            <busy>false</busy>
-                            <stopped>false</stopped>
-                            <creationDate>2016-03-16T02:12:10.046+04:00</creationDate>
-                        </userObject>
-                        <parentID>2</parentID>
-                    </child>
-                </children>
             </child>
         </children>
     </taskTreeNode>

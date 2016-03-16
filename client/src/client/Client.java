@@ -2,10 +2,7 @@ package client.src.client;
 
 
 import client.src.client.loader.TreeLoader;
-import client.src.communications.AddTask;
-import client.src.communications.DeleteTask;
-import client.src.communications.GetTree;
-import client.src.communications.Message;
+import client.src.communications.*;
 import client.src.tree.TaskTree;
 import client.src.tree.TaskTreeNode;
 import org.xml.sax.SAXException;
@@ -225,5 +222,40 @@ public class Client {
         return false;
     }
 
+
+    public boolean LogIn(String login, String password){
+        try {
+            sendObject(new Message("login"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            sendObject(new LogIn(login, password, "login"), getOutputStream(), LogIn.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Message message = null;
+        try {
+            message = getResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("ok")){
+            return true;
+        }
+        return false;
+    }
+
+    public void LogOut(){
+        try {
+            sendObject(new Message("logout"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -3,10 +3,7 @@ package server.src.server.session;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import server.src.communications.AddTask;
-import server.src.communications.DeleteTask;
-import server.src.communications.GetTree;
-import server.src.communications.Message;
+import server.src.communications.*;
 import server.src.info.Task;
 import server.src.loader.TreeLoader;
 import server.src.server.Marshall;
@@ -63,7 +60,7 @@ public class Session implements Runnable {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                } else if (message.getMessage().equals("getTree")) {
+                } else if (message.getMessage().equals("getTree") && isLogIn) {
 
                     message = new Message("ok");
 
@@ -92,7 +89,7 @@ public class Session implements Runnable {
                     }
 
 
-                } else if (message.getMessage().equals("addTask")) {
+                } else if (message.getMessage().equals("addTask") && isLogIn) {
                     AddTask addTask = null;
                     try {
                         addTask = (AddTask) TTP.getObject(getInputStream(), AddTask.class);
@@ -129,7 +126,7 @@ public class Session implements Runnable {
                     } catch (TransformerException e) {
                         e.printStackTrace();
                     }
-                } else if (message.getMessage().equals("deleteTask")) {
+                } else if (message.getMessage().equals("deleteTask") && isLogIn) {
                     DeleteTask deleteTask = null;
 
                     deleteTask = (DeleteTask) TTP.getObject(getInputStream(), DeleteTask.class);
@@ -162,6 +159,26 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     }
 
+                } else if (message.getMessage().equals("login")){
+                    LogIn logIn = (LogIn)TTP.getObject(getInputStream(), LogIn.class);
+
+                    try {
+                        if (User.logIn(logIn.getLogIn(), logIn.getPassword())){
+                            setCurrUser(logIn.getLogIn());
+                            setIsLogIn(true);
+                        }
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (JAXBException e) {
+                        e.printStackTrace();
+                    }
+
+                    TTP.sendResponse(new Message("ok"), getOutputStream());
+                }else if (message.getMessage().equals("logout") && isLogIn){
+                    setCurrUser("");
+                    setIsLogIn(false);
                 }
 
                 System.out.println(message.getMessage());

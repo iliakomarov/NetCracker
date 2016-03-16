@@ -3,6 +3,7 @@ package client.src.com.company;
 
 import client.src.client.Client;
 import client.src.tree.TaskTree;
+import client.src.tree.TaskTreeNode;
 
 
 import java.io.IOException;
@@ -11,6 +12,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Client client = new Client();
+        client.LogIn("d", "def");
+        client.LogOut();
         TaskTree tree = client.getTree("def");
         //tree = client.getTree("Ilya");
         //client.deleteTask(0, "def");
