@@ -3,6 +3,7 @@ package Tree2.src.UI;
 import client.src.client.Client;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
@@ -16,6 +17,26 @@ public class Authorization extends JDialog {
 
     public Authorization() {
 
+        contentPane = new JPanel();
+        buttonOK = new JButton("OK");
+        buttonCancel = new JButton("Cancel");
+        textFieldLogin = new JTextField();
+        passwordPasswordField = new JPasswordField();
+        buttonReg = new JButton("Registration");
+
+        contentPane.setLayout(null);
+        contentPane.setBounds(0, 0, 500, 200);
+        buttonOK.setBounds(10, 100, 80, 30);
+        buttonCancel.setBounds(100, 100, 80, 30);
+        buttonReg.setBounds(355, 100, 120, 30);
+        textFieldLogin.setBounds(10, 10, 465, 20);
+        passwordPasswordField.setBounds(10, 40, 465, 20);
+
+        contentPane.add(buttonOK, BorderLayout.NORTH);
+        contentPane.add(buttonCancel, BorderLayout.CENTER);
+        contentPane.add(textFieldLogin);
+        contentPane.add(passwordPasswordField);
+        contentPane.add(buttonReg, BorderLayout.EAST);
 
 
         setTitle("Authorization");
@@ -57,9 +78,18 @@ public class Authorization extends JDialog {
         String password = passwordPasswordField.getText();
         Client client = Client.getClient();
         if (client.LogIn(login, password)){
-
+            try {
+                TabbedPaneExample mainFrame = new TabbedPaneExample();
+                mainFrame.pack();
+                mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                mainFrame.setLocationRelativeTo(null);
+                mainFrame.setSize(new Dimension(800, 600));
+                mainFrame.setVisible(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        dispose();//TODO client
+        //dispose();//TODO client
     }
 
     private void onCancel() {
@@ -70,7 +100,9 @@ public class Authorization extends JDialog {
     public static void main(String[] args) {
         Authorization dialog = new Authorization();
         dialog.pack();
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        dialog.setBounds(0, 0, 500, 200);
         dialog.setVisible(true);
-        System.exit(0);
+        //System.exit(0);
     }
 }
