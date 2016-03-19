@@ -37,11 +37,12 @@ public class HttpServer {
     }
 
     public static void sendToAll(Object message) throws IOException {
-        if (message.getClass() == TaskTree.class)
+        if (message.getClass() == TaskTree.class) {
             for (int i = 0; i < clients.size(); i++) {
-                if (i % 2 != 0)
-                TTP.sendObject(message, new DataOutputStream(clients.get(i).getOutputStream()), TaskTree.class);
+                if (i % 2 != 0 && !clients.get(i).isClosed())
+                    TTP.sendObject(message, new DataOutputStream(clients.get(i).getOutputStream()), TaskTree.class);
             }
+        }
     }
 
     public void start(){

@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Client client = new Client();
-        client.LogIn("a", "a");
+        client.LogIn("d", "def");
         //client.LogOut();
         /*try {
             client.Registration("general", "a", "a", "a");
@@ -41,17 +41,38 @@ public class Main {
                         client.setIsRefreshGeneralTree(false);
                         System.out.println("Tree was refresh!");
                     }
+
+                    try {
+                        sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
         };
-        //thread.setDaemon(true);
+        thread.setDaemon(true);
         thread.start();
         try {
             client.addTask(TaskTreeNode.getInstance("Test test test test task from client!"), 0, "general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
         }
+
+        try {
+            TaskTree tree = client.getTree("general");
+        } catch (NoSuchUserException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //client.deleteTask(3, "def");
+
+
 
     }
 

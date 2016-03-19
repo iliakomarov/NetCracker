@@ -51,11 +51,17 @@ public class Client {
                         setIsRefreshGeneralTree(true);
                         System.out.println("!!!!");
                     }
+
+                    try {
+                        sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
 
-        //refreshGeneralTree.setDaemon(true);
+        refreshGeneralTree.setDaemon(true);
         refreshGeneralTree.start();
     }
 

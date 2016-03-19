@@ -36,7 +36,7 @@ public class ConnectionToServer {
             }
         };
 
-        //readFromServer.setDaemon(true);
+        readFromServer.setDaemon(true);
         readFromServer.start();
     }
 

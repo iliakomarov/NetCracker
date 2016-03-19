@@ -4,6 +4,7 @@ package server.src.tree;
 
 
 
+import com.sun.xml.internal.bind.CycleRecoverable;
 import server.src.Exceptions.BusyTaskException;
 import server.src.Exceptions.NoSuchTaskWithIDException;
 import server.src.Exceptions.StoppedTaskException;
@@ -29,11 +30,13 @@ import java.util.Vector;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({Task.class, Vector.class, DefaultMutableTreeNode.class})
-public class TaskTreeNode extends DefaultMutableTreeNode{
+@XmlSeeAlso({Task.class, Vector.class, DefaultMutableTreeNode.class, ParentPointer.class})
+public class TaskTreeNode extends DefaultMutableTreeNode implements CycleRecoverable{
 
     @XmlElement(name = "parentID")
     private int parentID;
+
+
 
     private TaskTreeNode(String taskName) {
         super(Task.getInstance(taskName));
@@ -55,6 +58,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
     }
 
 
+    @XmlElement(name = "parent")
     public TaskTreeNode getParent(){
         return (TaskTreeNode)parent;
     }
@@ -148,5 +152,11 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
     public void setParentID(int parentID) {
         this.parentID = parentID;
     }
+
+    public Object onCycleDetected(Context arg0) {
+        ParentPointer parentPointer = new ParentPointer();
+        return parentPointer;
+    }
+
 }
 
