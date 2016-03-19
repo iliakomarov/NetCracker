@@ -54,13 +54,14 @@ public class Main {
         thread.setDaemon(true);
         thread.start();
         try {
-            client.addTask(TaskTreeNode.getInstance("Test test test test task from client!"), 0, "general");
+            client.addTask(TaskTreeNode.getInstance("Test task from client!"), 1, "general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
         }
 
+        TaskTree tree = null;
         try {
-            TaskTree tree = client.getTree("general");
+            tree = client.getTree("general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
         }

@@ -31,7 +31,7 @@ import java.util.Vector;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Task.class, Vector.class, DefaultMutableTreeNode.class, ParentPointer.class})
-public class TaskTreeNode extends DefaultMutableTreeNode implements CycleRecoverable{
+public class TaskTreeNode extends DefaultMutableTreeNode{
 
     @XmlElement(name = "parentID")
     private int parentID;
@@ -58,7 +58,6 @@ public class TaskTreeNode extends DefaultMutableTreeNode implements CycleRecover
     }
 
 
-    @XmlElement(name = "parent")
     public TaskTreeNode getParent(){
         return (TaskTreeNode)parent;
     }
@@ -153,10 +152,6 @@ public class TaskTreeNode extends DefaultMutableTreeNode implements CycleRecover
         this.parentID = parentID;
     }
 
-    public Object onCycleDetected(Context arg0) {
-        ParentPointer parentPointer = new ParentPointer();
-        return parentPointer;
-    }
 
 }
 

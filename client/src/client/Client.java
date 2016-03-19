@@ -7,6 +7,7 @@ import client.src.communications.*;
 import client.src.tree.TaskTree;
 import client.src.tree.TaskTreeNode;
 import org.xml.sax.SAXException;
+import server.src.info.Task;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -169,6 +170,18 @@ public class Client {
     }
 
 
+    public static TaskTreeNode treeNode = null;
+
+    public static void setParents(TaskTreeNode root) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            treeNode = (TaskTreeNode) root.getChildAt(i);
+            treeNode.setParent(root);
+                setParents(treeNode);
+        }
+
+    }
+
+
     public TaskTree getTree(String name) throws IOException, NoSuchUserException {
 
         try {
@@ -195,6 +208,9 @@ public class Client {
         }else {
             throw new NoSuchUserException("User not exist or request has wrong data!");
         }
+
+
+        setParents(tree.getRoot());
 
         return tree;
     }
