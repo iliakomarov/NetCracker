@@ -6,7 +6,7 @@ package server.src.info;
 
 import server.src.Exceptions.BusyTaskException;
 import server.src.Exceptions.StoppedTaskException;
-import server.src.Generations.IDGenerator;
+import server.src.generations.IDGenerator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +38,7 @@ public class Task {
 
     private Task(String name)
     {
-        this.id = IDGenerator.getInstance();
+        this.id = IDGenerator.getInstance().getId();
         this.name=name;
         this.busy=this.stopped=false;
         this.creationDate = new Date();

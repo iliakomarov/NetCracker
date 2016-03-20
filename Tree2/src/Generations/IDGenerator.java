@@ -10,7 +10,7 @@ public class IDGenerator {
     private static IDGenerator instance;
 
     private IDGenerator() {
-        id = 0;
+        id = 1;
     }
 
     public static int getInstance() {

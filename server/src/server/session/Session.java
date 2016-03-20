@@ -4,6 +4,7 @@ package server.src.server.session;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import server.src.communications.*;
+import server.src.generations.IDGenerator;
 import server.src.info.Task;
 import server.src.loader.TreeLoader;
 import server.src.server.HttpServer;
@@ -16,6 +17,7 @@ import org.xml.sax.SAXException;
 import server.src.tree.User;
 
 
+import javax.jnlp.IntegrationService;
 import javax.jws.soap.SOAPBinding;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.bind.JAXBException;
@@ -40,6 +42,7 @@ public class Session implements Runnable {
         this.socket = socket;
         inputStream = new DataInputStream(this.socket.getInputStream());
         outputStream = new DataOutputStream(this.socket.getOutputStream());
+
     }
 
     //TODO Serialize all nodes in loop
@@ -90,6 +93,7 @@ public class Session implements Runnable {
                     }
 
                 } else if (message.getMessage().equals("addTask") && isLogIn) {
+
                     AddTask addTask = null;
                     try {
                         addTask = (AddTask) TTP.getObject(getInputStream(), AddTask.class);

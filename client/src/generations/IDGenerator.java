@@ -4,43 +4,24 @@ package client.src.generations;
  * Created by Степан on 11.11.2015.
  */
 public class IDGenerator {
+    private int id;
+    private static IDGenerator instance;
 
-    int id;
+    private IDGenerator() {
+        id = 1;
+    }
 
-        /**
-         * Конструктор
-         *
-         * @param id ID генератора
-         */
-        public IDGenerator(int id) {
-            this.id = id;
-        }
+    public static IDGenerator getInstance() {
+        if (instance == null) return instance = new IDGenerator();
+        else return instance;
+    }
 
-        /**
-         * Конструктор
-         */
-        public IDGenerator() {
-            this(0);
-        }
+    public void setId(int num){
+        id = num;
+    }
 
-        /**
-         * Получение нового ID
-         *
-         * @return Получение ID
-         */
-        public int getNext() {
-            return id++;
-        }
-
-        /**
-         * Получение ID
-         *
-         * @return Возвращает ID
-         */
-        public int getId() {
-            return id;
-        }
-
-
+    public int getId() {
+        return id++;
+    }
 
 }

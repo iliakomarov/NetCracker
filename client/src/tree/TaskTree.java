@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.IOException;
 
 /**
  * Created by Степан on 09.11.2015.
@@ -50,7 +51,7 @@ public class TaskTree extends DefaultTreeModel {
         return asksAllowsChildren();
     }
 
-    public boolean addTask(String taskname) {
+    public boolean addTask(String taskname) throws IOException {
         ((MutableTreeNode) this.getRoot()).insert(TaskTreeNode.getInstance(taskname), 0);
         //return ((TaskTreeNode)this.getRoot()).addSubtask(taskname);
         return true;

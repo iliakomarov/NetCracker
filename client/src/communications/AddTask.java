@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -23,7 +24,7 @@ public class AddTask extends Message {
     @XmlElement(name = "treeName")
     private String treeName;
 
-    public AddTask() {
+    public AddTask() throws IOException {
         this.userObject = TaskTreeNode.getInstance("root");
 
 

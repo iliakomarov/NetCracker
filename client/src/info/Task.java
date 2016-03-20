@@ -1,14 +1,17 @@
 package client.src.info;
 
+
 import Tree2.src.Exceptions.BusyTaskException;
 import Tree2.src.Exceptions.StoppedTaskException;
-import Tree2.src.Generations.IDGenerator;
-import Tree2.src.Info.Info;
+import client.src.generations.IDGenerator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,17 +36,22 @@ public class Task {
 
     public Task(){}
 
-    private Task(String name)
-    {
-        this.id = IDGenerator.getInstance();
+    private Task(String name) throws IOException {
+
+        FileInputStream fileInputStream = new FileInputStream("client\\src\\lastID.txt");
+        DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+        int lastID = dataInputStream.readInt();
+        IDGenerator generator = IDGenerator.getInstance();
+        generator.setId(lastID);
+        dataInputStream.close();
+        this.id = generator.getId();
         this.name=name;
         this.busy=this.stopped=false;
         this.creationDate = new Date();
         this.usingDate=new ArrayList<>();
     }
 
-    public static Task getInstance(String name)
-    {
+    public static Task getInstance(String name) throws IOException {
         return new Task(name);
     }
 

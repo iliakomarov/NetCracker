@@ -15,6 +15,7 @@ import client.src.info.Task;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.xml.bind.annotation.*;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.*;
 import java.util.LinkedList;
@@ -37,7 +38,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
     @XmlElement(name = "parentID")
     private int parentID;
 
-    private TaskTreeNode(String taskName) {
+    private TaskTreeNode(String taskName) throws IOException {
         super(Task.getInstance(taskName));
 
     }
@@ -47,7 +48,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         super(user);
     }
 
-    public static TaskTreeNode getInstance(String taskName) {
+    public static TaskTreeNode getInstance(String taskName) throws IOException {
 
         return new TaskTreeNode(taskName);
     }
@@ -87,7 +88,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         return time;
     }
 
-    public boolean addSubtask(String taskname) {
+    public boolean addSubtask(String taskname) throws IOException {
         add(TaskTreeNode.getInstance(taskname));
         return true;
     }

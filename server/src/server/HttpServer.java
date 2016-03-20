@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -39,13 +40,19 @@ public class HttpServer {
     public static void sendToAll(Object message) throws IOException {
         if (message.getClass() == TaskTree.class) {
             for (int i = 0; i < clients.size(); i++) {
-                if (i % 2 != 0 && !clients.get(i).isClosed())
-                    TTP.sendObject(message, new DataOutputStream(clients.get(i).getOutputStream()), TaskTree.class);
+                if (i % 2 != 0 && clients.get(i) != null) {
+                    try{
+                        TTP.sendObject(message, new DataOutputStream(clients.get(i).getOutputStream()), TaskTree.class);
+                    }
+                    catch (SocketException e){
+                        clients.set(i, null);
+                    }
+
+                }
             }
         }
     }
 
-    public void start(){
-        main(new String[]{});
+    public void start(){main(new String[]{});
     }
 }

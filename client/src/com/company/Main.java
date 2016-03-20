@@ -1,8 +1,10 @@
 package client.src.com.company;
 
 
+import Tree2.src.Exceptions.StoppedTaskException;
 import client.src.client.Client;
 import client.src.client.exception.NoSuchUserException;
+import client.src.info.Task;
 import client.src.tree.TaskTree;
 import client.src.tree.TaskTreeNode;
 
@@ -54,17 +56,22 @@ public class Main {
         thread.setDaemon(true);
         thread.start();
         try {
-            client.addTask(TaskTreeNode.getInstance("Test task from client!"), 1, "general");
+
+            TaskTreeNode taskTreeNode = TaskTreeNode.getInstance("Test task from client!");
+            taskTreeNode.getTask().startTask();
+            client.addTask(taskTreeNode, 0, "general");
         } catch (NoSuchUserException e) {
+            e.printStackTrace();
+        } catch (StoppedTaskException e) {
             e.printStackTrace();
         }
 
-        TaskTree tree = null;
+        /*TaskTree tree = null;
         try {
             tree = client.getTree("general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
-        }
+        }*/
 
         try {
             thread.join();

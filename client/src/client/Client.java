@@ -2,16 +2,12 @@ package client.src.client;
 
 
 import client.src.client.exception.NoSuchUserException;
-import client.src.client.loader.TreeLoader;
 import client.src.communications.*;
+import client.src.generations.IDGenerator;
 import client.src.tree.TaskTree;
 import client.src.tree.TaskTreeNode;
-import org.xml.sax.SAXException;
-import server.src.info.Task;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.Socket;
 
@@ -216,7 +212,7 @@ public class Client {
     }
 
 
-    public boolean addTask(TaskTreeNode userObject, int id, String treeName) throws NoSuchUserException {
+    public boolean addTask(TaskTreeNode userObject, int id, String treeName) throws NoSuchUserException, IOException {
 
         try {
             sendObject(new Message("addTask"), getOutputStream(), Message.class);
@@ -225,10 +221,21 @@ public class Client {
         }
 
 
+
         try {
             sendObject(new AddTask(userObject, id, treeName, "addTask"), getOutputStream(), AddTask.class);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+            FileOutputStream fileOutputStream = new FileOutputStream("client\\src\\lastID.txt");
+            DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+            IDGenerator idGenerator = IDGenerator.getInstance();
+            int last = idGenerator.getId();
+            dataOutputStream.writeInt(last);
+            dataOutputStream.flush();
+            dataOutputStream.close();
+            fileOutputStream.close();
         }
 
         Message message = null;
@@ -245,6 +252,9 @@ public class Client {
         if (message.getMessage().equals("ok")){
                 return true;
         }
+
+
+
         return false;
     }
 
