@@ -55,20 +55,22 @@ public class Main {
         };
         thread.setDaemon(true);
         thread.start();
-        try {
+        /*try {
 
             TaskTreeNode taskTreeNode = TaskTreeNode.getInstance("Test task from client!");
             //taskTreeNode.getTask().startTask();
             client.addTask(taskTreeNode, 50, "general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        /*try {
-            client.startTask(45, "general");
+        try {
+            client.startTask(50, "general");
+            client.pauseTask(50, "general");
+            client.stopTask(50, "general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
-        }*/
+        }
 
         /*TaskTree tree = null;
         try {

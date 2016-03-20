@@ -3,11 +3,16 @@ package server.src.communications;
 
 import client.src.communications.Message;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Fadeev on 21.03.2016.
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class StopTask extends Message {
     @XmlElement(name = "taskId")
     private int taskId;

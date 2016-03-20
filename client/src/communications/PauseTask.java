@@ -1,6 +1,5 @@
 package client.src.communications;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,19 +10,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StopTask extends Message {
+public class PauseTask extends Message {
     @XmlElement(name = "taskId")
     private int taskId;
     @XmlElement(name = "treeName")
     private String treeName;
 
-    public StopTask(int taskId, String treeName, String message){
+    public PauseTask(int taskId, String treeName, String message){
         this.taskId = taskId;
         this.treeName = treeName;
         this.setMessage(message);
     }
 
-    public StopTask(){}
+    public PauseTask(){}
 
 
     public int getTaskId() {

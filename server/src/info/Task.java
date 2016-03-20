@@ -54,6 +54,7 @@ public class Task {
         checkStop();
         Date[] date = new Date[2];
         date[0] = new Date();
+        if (usingDate == null) usingDate = new ArrayList<>();
         usingDate.add(date);
         busy = true;
         return true;

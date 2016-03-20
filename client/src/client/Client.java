@@ -449,7 +449,43 @@ public class Client {
 
 
         try {
-            sendObject(new StartTask(id, treeName, "stoptask"), getOutputStream(),StopTask.class);
+            sendObject(new StopTask(id, treeName, "stoptask"), getOutputStream(),StopTask.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Message message = null;
+        try {
+            message = getResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
+        }
+
+        if (message.getMessage().equals("ok")){
+            return true;
+        }
+
+
+
+        return false;
+    }
+
+    public boolean pauseTask(int id, String treeName) throws NoSuchUserException, IOException {
+
+        try {
+            sendObject(new Message("pausetask"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            sendObject(new PauseTask(id, treeName, "pausetask"), getOutputStream(),PauseTask.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -337,6 +337,55 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     }
 
+                }else if (message.getMessage().equals("pausetask") && isLogIn) {
+
+                    PauseTask pauseTask = null;
+                    try {
+                        pauseTask = (PauseTask) TTP.getObject(getInputStream(), PauseTask.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                    try {
+
+                        TaskTreeNode currTreeNode = null;
+
+                        TaskTree tree = TreeLoader.loadTree(pauseTask.getTreeName());
+                        TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(pauseTask.getTaskId());
+                        try {
+                            findedNode.getTask().pauseTask();
+                        } catch (StoppedTaskException e) {
+                            e.printStackTrace();
+                        }
+                        TreeLoader.updateTree(tree, pauseTask.getTreeName());
+
+                        if (pauseTask.getTreeName().equals("general")){
+                            HttpServer.sendToAll(tree);
+                        }
+                        TTP.sendResponse(new Message("ok"), getOutputStream());
+
+
+
+                    } catch (IllegalStateException e) {
+                        try {
+                            TTP.sendResponse(new Message("fail"), getOutputStream());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JAXBException e) {
+                        e.printStackTrace();
+                    } catch (TransformerException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else if (!isLogIn){
                     TTP.sendResponse(new Message("User not found!"), getOutputStream());
