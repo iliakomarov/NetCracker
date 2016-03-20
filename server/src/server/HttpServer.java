@@ -47,7 +47,6 @@ public class HttpServer {
                     catch (SocketException e){
                         clients.set(i, null);
                     }
-
                 }
             }
         }

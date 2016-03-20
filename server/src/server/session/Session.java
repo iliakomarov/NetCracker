@@ -1,28 +1,20 @@
 package server.src.server.session;
 
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import server.src.Exceptions.StoppedTaskException;
 import server.src.communications.*;
-import server.src.generations.IDGenerator;
-import server.src.info.Task;
 import server.src.loader.TreeLoader;
 import server.src.server.HttpServer;
 import server.src.server.Marshall;
 import server.src.server.session.protocols.TTP;
 import server.src.tree.TaskTree;
 import server.src.tree.TaskTreeNode;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import server.src.tree.User;
 
 
-import javax.jnlp.IntegrationService;
-import javax.jws.soap.SOAPBinding;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.Socket;
@@ -202,6 +194,149 @@ public class Session implements Runnable {
                     }
 
                     TTP.sendResponse(new Message("fail"), getOutputStream());
+                }else if (message.getMessage().equals("rename") && isLogIn) {
+
+                    Rename rename = null;
+                    try {
+                        rename = (Rename) TTP.getObject(getInputStream(), Rename.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                    try {
+
+                        TaskTreeNode currTreeNode = null;
+
+                        TaskTree tree = TreeLoader.loadTree(rename.getTreeName());
+                        TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(rename.getTaskId());
+                        findedNode.getTask().changeName(rename.getNewName());
+                        TreeLoader.updateTree(tree, rename.getTreeName());
+
+                        if (rename.getTreeName().equals("general")){
+                            HttpServer.sendToAll(tree);
+                        }
+                        TTP.sendResponse(new Message("ok"), getOutputStream());
+
+
+
+                    } catch (IllegalStateException e) {
+                        try {
+                            TTP.sendResponse(new Message("fail"), getOutputStream());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JAXBException e) {
+                        e.printStackTrace();
+                    } catch (TransformerException e) {
+                        e.printStackTrace();
+                    }
+
+                }else if (message.getMessage().equals("starttask") && isLogIn) {
+
+                    StartTask startTask = null;
+                    try {
+                        startTask = (StartTask) TTP.getObject(getInputStream(), StartTask.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                    try {
+
+                        TaskTreeNode currTreeNode = null;
+
+                        TaskTree tree = TreeLoader.loadTree(startTask.getTreeName());
+                        TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(startTask.getTaskId());
+                        try {
+                            findedNode.getTask().startTask();
+                        } catch (StoppedTaskException e) {
+                            e.printStackTrace();
+                        }
+                        TreeLoader.updateTree(tree, startTask.getTreeName());
+
+                        if (startTask.getTreeName().equals("general")){
+                            HttpServer.sendToAll(tree);
+                        }
+                        TTP.sendResponse(new Message("ok"), getOutputStream());
+
+
+
+                    } catch (IllegalStateException e) {
+                        try {
+                            TTP.sendResponse(new Message("fail"), getOutputStream());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JAXBException e) {
+                        e.printStackTrace();
+                    } catch (TransformerException e) {
+                        e.printStackTrace();
+                    }
+
+                }else if (message.getMessage().equals("stoptask") && isLogIn) {
+
+                    StopTask stopTask = null;
+                    try {
+                        stopTask = (StopTask) TTP.getObject(getInputStream(), StopTask.class);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                    try {
+
+                        TaskTreeNode currTreeNode = null;
+
+                        TaskTree tree = TreeLoader.loadTree(stopTask.getTreeName());
+                        TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(stopTask.getTaskId());
+                        try {
+                            findedNode.getTask().stopTask();
+                        } catch (StoppedTaskException e) {
+                            e.printStackTrace();
+                        }
+                        TreeLoader.updateTree(tree, stopTask.getTreeName());
+
+                        if (stopTask.getTreeName().equals("general")){
+                            HttpServer.sendToAll(tree);
+                        }
+                        TTP.sendResponse(new Message("ok"), getOutputStream());
+
+
+
+                    } catch (IllegalStateException e) {
+                        try {
+                            TTP.sendResponse(new Message("fail"), getOutputStream());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } catch (SAXException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JAXBException e) {
+                        e.printStackTrace();
+                    } catch (TransformerException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 else if (!isLogIn){
                     TTP.sendResponse(new Message("User not found!"), getOutputStream());

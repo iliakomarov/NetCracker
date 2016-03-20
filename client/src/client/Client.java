@@ -363,4 +363,115 @@ public class Client {
     public void setIsRefreshGeneralTree(boolean isRefreshGeneralTree) {
         this.isRefreshGeneralTree = isRefreshGeneralTree;
     }
+
+    public boolean rename(String newName, int id, String treeName) throws NoSuchUserException, IOException {
+
+        try {
+            sendObject(new Message("rename"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            sendObject(new Rename(newName, id, treeName, "rename"), getOutputStream(),Rename.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Message message = null;
+        try {
+            message = getResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
+        }
+
+        if (message.getMessage().equals("ok")){
+            return true;
+        }
+
+
+
+        return false;
+    }
+
+
+    public boolean startTask(int id, String treeName) throws NoSuchUserException, IOException {
+
+        try {
+            sendObject(new Message("starttask"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            sendObject(new StartTask(id, treeName, "starttask"), getOutputStream(),StartTask.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Message message = null;
+        try {
+            message = getResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
+        }
+
+        if (message.getMessage().equals("ok")){
+            return true;
+        }
+
+
+
+        return false;
+    }
+
+
+    public boolean stopTask(int id, String treeName) throws NoSuchUserException, IOException {
+
+        try {
+            sendObject(new Message("stoptask"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        try {
+            sendObject(new StartTask(id, treeName, "stoptask"), getOutputStream(),StopTask.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Message message = null;
+        try {
+            message = getResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (message.getMessage().equals("User not found!")){
+            throw new NoSuchUserException("User not found!");
+        }
+
+        if (message.getMessage().equals("ok")){
+            return true;
+        }
+
+
+
+        return false;
+    }
+
 }

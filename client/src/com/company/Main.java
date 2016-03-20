@@ -58,13 +58,17 @@ public class Main {
         try {
 
             TaskTreeNode taskTreeNode = TaskTreeNode.getInstance("Test task from client!");
-            taskTreeNode.getTask().startTask();
-            client.addTask(taskTreeNode, 0, "general");
+            //taskTreeNode.getTask().startTask();
+            client.addTask(taskTreeNode, 50, "general");
         } catch (NoSuchUserException e) {
             e.printStackTrace();
-        } catch (StoppedTaskException e) {
-            e.printStackTrace();
         }
+
+        /*try {
+            client.startTask(45, "general");
+        } catch (NoSuchUserException e) {
+            e.printStackTrace();
+        }*/
 
         /*TaskTree tree = null;
         try {

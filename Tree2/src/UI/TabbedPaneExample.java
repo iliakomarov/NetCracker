@@ -1,6 +1,7 @@
 package Tree2.src.UI;
 
 import Tree2.src.Tree.TaskTree;
+import Tree2.src.Tree.TaskTreeNode;
 import Tree2.src.Tree.User;
 import client.src.client.Client;
 import client.src.client.exception.NoSuchUserException;
@@ -87,9 +88,8 @@ public class TabbedPaneExample extends JFrame {
         if (tabbedPane.getTabCount() > 0) tabbedPane.remove(0);
 
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-        for (int i = 0; i < root.getChildCount(); i++) {
             JPanel panel = new JPanel();
-            JTree jTree = new JTree(root.getChildAt(i), true);
+            JTree jTree = new JTree(root, true);
             jTree.setLocation(panel.getLocation());
             panel.setLayout(new FlowLayout(0));
             panel.add(jTree);
@@ -105,7 +105,6 @@ public class TabbedPaneExample extends JFrame {
                     nodeMenu.setVisible(true);
                 }
             });
-        }
 
 
     }
