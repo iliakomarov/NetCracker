@@ -108,4 +108,8 @@ public class Task  {
         }
         return time;
     }
+
+    public String toString(){
+        return name;
+    }
 }

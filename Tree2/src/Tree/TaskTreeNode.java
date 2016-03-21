@@ -101,5 +101,9 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
         }
         throw new NoSuchTaskWithIDException();
     }
+
+    public String toString(){
+        return getTask().toString();
+    }
 }
 
