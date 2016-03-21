@@ -40,6 +40,7 @@ public class TreeLoader {
             document.getDocumentElement().appendChild(n);
             document.normalize();
             toXML(document, fileWriter);
+            fileWriter.close();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -51,6 +52,7 @@ public class TreeLoader {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
+
     }
 
     public static String marshalTree(TaskTree treeNode, String name) throws ParserConfigurationException, IOException, org.xml.sax.SAXException, TransformerConfigurationException, TransformerException {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Степан on 11.11.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅ on 11.11.2015.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -59,6 +59,7 @@ public class Task {
         checkStop();
         Date[] date = new Date[2];
         date[0] = new Date();
+        if (usingDate == null) usingDate = new ArrayList<>();
         usingDate.add(date);
         busy = true;
         return true;
@@ -127,9 +128,21 @@ public class Task {
     public long getWorkingTime() throws BusyTaskException {
         checkBusy();
         long time = 0;
-        for (Date[] d : usingDate) {
-            time += d[1].getTime() - d[0].getTime();
+        if (usingDate != null) {
+            for (Date[] d : usingDate) {
+                time += d[1].getTime() - d[0].getTime();
+            }
         }
         return time;
     }
+
+    public String getName(){
+        return this.name;
+    }
+
+
+    public String toString(){
+        return getName();
+    }
+
 }

@@ -1,11 +1,10 @@
 package Tree2.src.Tree;
 
-import Tree2.src.Exceptions.BusyTaskException;
-import Tree2.src.Exceptions.NoSuchTaskWithIDException;
-import Tree2.src.Exceptions.StoppedTaskException;
+
+import Tree2.src.Exceptions.*;
 import Tree2.src.Info.Info;
+import Tree2.src.Info.InfoAvailable;
 import Tree2.src.Info.Task;
-import sun.reflect.generics.tree.Tree;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.lang.*;
@@ -21,12 +20,11 @@ import java.util.Queue;
  */
 public class TaskTreeNode extends DefaultMutableTreeNode {
 
-    private TaskTreeNode(String taskName) {
+    public TaskTreeNode(String taskName) {
         super(Task.getInstance(taskName));
     }
 
-    public TaskTreeNode(User user)
-    {
+    public TaskTreeNode(User user) {
         super(user);
     }
 
@@ -35,12 +33,13 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
     }
 
     public Task getTask() {
-        return (Task)userObject;
+        if (userObject instanceof Task) return (Task) userObject;
+        throw new NoTaskException();
     }
 
     public Info getSimpleInfo()
     {
-        return getTask().getSimpleInfo();
+        return ((InfoAvailable) userObject).getSimpleInfo();
     }
 
     public Info getFullInfo() throws BusyTaskException {
@@ -62,6 +61,13 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
     }
 
     public boolean addSubtask(String taskname) {
+        if (getChildCount() > 0) {
+            for (Object child : children) {
+                TaskTreeNode node = (TaskTreeNode) child;
+                String name = node.getTask().getName();
+                if (name.compareTo(taskname) == 0) throw new WrongNameException();
+            }
+        }
         add(TaskTreeNode.getInstance(taskname));
         return true;
     }
@@ -84,13 +90,17 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
         return getTask().stopTask();
     }
 
+    public boolean renameTask(String name) {
+        return getTask().changeName(name);
+    }
+
     public TaskTreeNode seekForTaskByID(int info) {
         Queue q = new LinkedList();
         q.add(this);
         while (!q.isEmpty()) {
-            DefaultMutableTreeNode n = (DefaultMutableTreeNode)q.remove();
+            DefaultMutableTreeNode n = (DefaultMutableTreeNode) q.remove();
             if (n instanceof TaskTreeNode) {
-                TaskTreeNode f=(TaskTreeNode)n;
+                TaskTreeNode f = (TaskTreeNode) n;
                 if (f.getTask().getId() == info) {
                     return f;
                 }
@@ -100,10 +110,6 @@ public class TaskTreeNode extends DefaultMutableTreeNode {
             }
         }
         throw new NoSuchTaskWithIDException();
-    }
-
-    public String toString(){
-        return getTask().toString();
     }
 }
 

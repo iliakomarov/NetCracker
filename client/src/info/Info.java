@@ -20,4 +20,12 @@ public class Info {
         }
         return res.toString();
     }
+
+    public int getLength() {
+        return length;
+    }
+
+    public Object getInfoAt(int index) {
+        return info[index];
+    }
 }

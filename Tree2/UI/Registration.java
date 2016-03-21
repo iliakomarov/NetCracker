@@ -1,4 +1,4 @@
-package Tree2.src.UI;
+package Tree2.UI;
 
 import javax.swing.*;
 import java.awt.event.*;

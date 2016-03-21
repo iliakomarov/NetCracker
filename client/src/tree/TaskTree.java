@@ -1,7 +1,8 @@
 package client.src.tree;
 
-
-import Tree2.src.Exceptions.NoSuchTaskWithIDException;
+import client.src.info.Statistic;
+import server.src.Exceptions.BusyTaskException;
+import server.src.Exceptions.NoSuchTaskWithIDException;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -69,6 +70,18 @@ public class TaskTree extends DefaultTreeModel {
         throw new NoSuchTaskWithIDException();
     }
 
+    public TaskTreeNode seekForTaskByName(String name) {
+        MutableTreeNode root = this.getRoot();
+        for (int i = 0; i < root.getChildCount(); i++) {
+            TaskTreeNode child = (TaskTreeNode) root.getChildAt(i);
+            try {
+                return child.seekForTaskByName(name);
+            } catch (NoSuchTaskWithIDException ex) {
+            }
+        }
+        throw new NoSuchTaskWithIDException();
+    }
+
     @XmlElement
     public User getUser() {
         return user;
@@ -76,6 +89,10 @@ public class TaskTree extends DefaultTreeModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Statistic getStatistic() throws BusyTaskException, Tree2.src.Exceptions.BusyTaskException {
+        return new Statistic(this);
     }
 }
 

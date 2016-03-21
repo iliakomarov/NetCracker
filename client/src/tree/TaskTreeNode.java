@@ -128,6 +128,25 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         }
         throw new NoSuchTaskWithIDException();
     }
+
+    public TaskTreeNode seekForTaskByName(String name) {
+        Queue q = new LinkedList();
+        q.add(this);
+        while (!q.isEmpty()) {
+            DefaultMutableTreeNode n = (DefaultMutableTreeNode)q.remove();
+            if (n instanceof server.src.tree.TaskTreeNode) {
+                TaskTreeNode f=(TaskTreeNode)n;
+                if (f.getTask().getName().equals(name)) {
+                    return f;
+                }
+            }
+            for (int i = 0; i < n.getChildCount(); i++) {
+                q.add(n.getChildAt(i));
+            }
+        }
+        throw new NoSuchTaskWithIDException();
+    }
+
     public void setParent(server.src.tree.TaskTreeNode parent) {
         this.parent = parent;
     }
@@ -150,6 +169,10 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
 
     public void setParentID(int parentID) {
         this.parentID = parentID;
+    }
+
+    public boolean renameTask(String name) {
+        return getTask().changeName(name);
     }
 }
 

@@ -1,45 +1,38 @@
-package Tree2.src.UI;
+package Tree2.UI;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-public class RequestTaskName extends JDialog {
+public class Authorization extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
-    private int status;
+    private JTextField textFieldLogin;
+    private JPasswordField passwordPasswordField;
+    private JButton buttonReg;
 
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public int showDialog()
-    {
-        pack();
-        setVisible(true);
-        return status;
-    }
-
-    private String taskName;
-
-    public RequestTaskName() {
-        contentPane = new JPanel();
+    public Authorization() {
+        setTitle("Authorization");
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK = new JButton("OK");
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
             }
         });
 
-        buttonCancel = new JButton("Cancel");
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
+            }
+        });
+
+        buttonReg.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Registration().setVisible(true);
             }
         });
 
@@ -61,19 +54,18 @@ public class RequestTaskName extends JDialog {
 
     private void onOK() {
 // add your code here
-        taskName=textField1.getText();
-        textField1.setText("");
-        status=1;
-        setVisible(false);
-        //dispose();
+        dispose();//TODO client
     }
 
     private void onCancel() {
 // add your code here if necessary
-        status=0;
-        textField1.setText("");
-        setVisible(false);
-        //dispose();
+        dispose();
     }
 
+    public static void main(String[] args) {
+        Authorization dialog = new Authorization();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
+    }
 }
