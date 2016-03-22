@@ -63,7 +63,11 @@ public class TabbedPaneExample extends JFrame {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
                     if (nodeMenu != null) nodeMenu.setVisible(false);
-                    nodeMenu = new TaskMenu(jTree);
+                    try {
+                        nodeMenu = new TaskMenu(jTree);
+                    }catch (NullPointerException e1){
+                        System.out.println(e1.getMessage());
+                    }
                     nodeMenu.setLocation(MouseInfo.getPointerInfo().getLocation());
                     nodeMenu.setVisible(true);
                 }
@@ -107,10 +111,18 @@ public class TabbedPaneExample extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 client.src.info.Statistic stat = null;
                 try {
-                    stat = ((client.src.tree.TaskTree) tree.getModel()).getStatistic();
+                    client.src.tree.TaskTree client = null;
+                    int a = tabbedPane.getSelectedIndex();
+                    if (tabbedPane.getSelectedIndex() == 1) client = Client.getClient().getTree("general");
+                    else client = Client.getClient().getTree("");
+                    stat = client.getStatistic();
                 } catch (BusyTaskException e1) {
                     e1.printStackTrace();//TODO exception
                 } catch (server.src.Exceptions.BusyTaskException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchUserException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
                 if (statistic != null) statistic.dispose();

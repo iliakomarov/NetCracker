@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class TaskMenu extends JPopupMenu {
 
-    //TODO client на всех операциях с деревом
+    //TODO client пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public TaskMenu(JTree jTree) {
         RequestTaskName req = new RequestTaskName();
 
@@ -74,7 +74,7 @@ public class TaskMenu extends JPopupMenu {
                 } catch (NoSuchUserException e1) {
                     e1.printStackTrace();
                 }
-                //if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
+                if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
                 jTree.repaint();
             }
         });
@@ -98,7 +98,10 @@ public class TaskMenu extends JPopupMenu {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    if (pathForLocation != null) pathForLocation.renameTask(req.getTaskName() + "/general");
+                    if(node.getTask().getName().split("/").length == 2) {
+                        if (pathForLocation != null) pathForLocation.renameTask(req.getTaskName() + "/general");
+                    }
+                    else pathForLocation.renameTask(req.getTaskName());
                     jTree.repaint();
                 }
             }
@@ -157,7 +160,7 @@ public class TaskMenu extends JPopupMenu {
                     client.src.client.Client client = Client.getClient();
                     try {
                         if(node.getTask().getName().split("/").length == 2) client.startTask(node.getTask().getId(), "general");
-                        else client.startTask(node.getTask().getId(), "general");
+                        else client.startTask(node.getTask().getId(), "");
                     } catch (NoSuchUserException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {
