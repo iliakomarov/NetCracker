@@ -143,7 +143,36 @@ public class TabbedPaneExample extends JFrame {
         topPanel.setLayout(new BorderLayout());
         getContentPane().add(topPanel);
         tabbedPane = new JTabbedPane();
+        Thread thread = new Thread() {
 
+            public void run() {
+            Client client = Client.getClient();
+                while (true) {
+                    if (client.isRefreshGeneralTree()) {
+                        client.setIsRefreshGeneralTree(false);
+                        tabbedPane.remove(1);
+                        try {
+                            makeTree("general");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (NoSuchUserException e) {
+                            e.printStackTrace();
+                        }
+                        updateTree();
+                        System.out.println("Tree was refresh!");
+                    }
+
+                    try {
+                        sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        };
+        thread.setDaemon(true);
+        thread.start();
         try {
             Authorization dialog = new Authorization();
             dialog.pack();
