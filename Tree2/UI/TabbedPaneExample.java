@@ -6,6 +6,7 @@ import Tree2.src.Info.Statistic;
 import Tree2.src.Tree.TaskTree;
 import Tree2.src.Tree.TaskTreeNode;
 import Tree2.src.Tree.User;
+import UI.Authorization;
 import UI.RequestTaskName;
 import client.src.client.Client;
 import client.src.client.exception.NoSuchUserException;
@@ -28,18 +29,25 @@ public class TabbedPaneExample extends JFrame {
     private JMenuBar menu;
     private JFrame statistic;
 
-    private void makeTree() throws IOException, NoSuchUserException {
+    private void makeTree(String treeName) throws IOException, NoSuchUserException {
         client.src.client.Client client = Client.getClient();
         client.src.tree.TaskTree model = null;
-        client.LogIn("d", "def");
-        model = client.getTree("general");
+        try{
+
+
+            model = client.getTree(treeName);
+        }
+        catch (NoSuchUserException e){
+            System.out.println(e.getMessage());
+        }
+
         //create the tree by passing in the root node
         tree = new JTree(model);
         tree.setBackground(Color.GRAY);
     }
 
     private void updateTree() {
-        tabbedPane.removeAll();
+        //tabbedPane.removeAll();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         //for (int i = 0; i < root.getChildCount(); i++) {
             JPanel panel = new JPanel();
@@ -80,6 +88,7 @@ public class TabbedPaneExample extends JFrame {
         JMenu menuAdd = new JMenu("Add task");
         JMenu menuStat = new JMenu("Statistics");
         JMenu menuUser = new JMenu("Change user");
+        JMenu menuLogin = new JMenu("Log In");
 
         menuAdd.addMouseListener(new MouseAdapter() {
             @Override
@@ -112,10 +121,14 @@ public class TabbedPaneExample extends JFrame {
         menuUser.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                dispose(); //TODO client
-                new Authorization().setVisible(true);
+                //dispose(); //TODO client
+                Authorization dialog = new Authorization();
+                dialog.pack();
+                dialog.setVisible(true);
+                System.exit(0);
             }
         });
+
 
         menu.add(menuAdd);
         menu.add(menuStat);
@@ -131,11 +144,22 @@ public class TabbedPaneExample extends JFrame {
         getContentPane().add(topPanel);
         tabbedPane = new JTabbedPane();
 
-        makeTree();
+        try {
+            Authorization dialog = new Authorization();
+            dialog.pack();
+            dialog.setVisible(true);
 
-        makeMenu();
+            makeTree("");
+            updateTree();
+            makeTree("general");
+            updateTree();
+            makeMenu();
 
-        updateTree(); //TODO client
+            //updateTree(); //TODO client
+        }
+        catch (Exception e){
+
+        }
 
         topPanel.add(tabbedPane, BorderLayout.CENTER);
 

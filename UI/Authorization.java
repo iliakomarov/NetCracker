@@ -1,4 +1,6 @@
-package Tree2.UI;
+package UI;
+
+import client.src.client.Client;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -32,7 +34,9 @@ public class Authorization extends JDialog {
         buttonReg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Registration().setVisible(true);
+                Registration dialog = new Registration();
+                dialog.pack();
+                dialog.setVisible(true);
             }
         });
 
@@ -53,7 +57,8 @@ public class Authorization extends JDialog {
     }
 
     private void onOK() {
-// add your code here
+        Client client = Client.getClient();
+        client.LogIn(textFieldLogin.getText(), passwordPasswordField.getText());
         dispose();//TODO client
     }
 

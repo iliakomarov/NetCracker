@@ -41,7 +41,11 @@ public class TaskMenu extends JPopupMenu {
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     client.src.client.Client client = Client.getClient();
                     try {
-                        client.addTask(newChild, node.getTask().getId(), "general");
+                        if(node.getTask().getName().split("/").length == 2) {
+                            newChild.getTask().changeName(newChild.getTask().getName() + "/general");
+                            client.addTask(newChild, node.getTask().getId(), "general");
+                        }
+                        else client.addTask(newChild, node.getTask().getId(), "");
                     } catch (NoSuchUserException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {
@@ -63,7 +67,10 @@ public class TaskMenu extends JPopupMenu {
                 client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                 client.src.client.Client client = Client.getClient();
                 try {
-                    client.deleteTask(node.getTask().getId(), "general");
+                    if(node.getTask().getName().split("/").length == 2) {
+                        client.deleteTask(node.getTask().getId(), "general");
+                    }
+                    else client.deleteTask(node.getTask().getId(), "");
                 } catch (NoSuchUserException e1) {
                     e1.printStackTrace();
                 }
@@ -84,13 +91,14 @@ public class TaskMenu extends JPopupMenu {
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     client.src.client.Client client = Client.getClient();
                     try {
-                        client.rename(req.getTaskName(), node.getTask().getId(), "general");
+                        if(node.getTask().getName().split("/").length == 2) client.rename(req.getTaskName() + "/general", node.getTask().getId(), "general");
+                        else client.rename(req.getTaskName(), node.getTask().getId(), "");
                     } catch (NoSuchUserException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    if (pathForLocation != null) pathForLocation.renameTask(req.getTaskName());
+                    if (pathForLocation != null) pathForLocation.renameTask(req.getTaskName() + "/general");
                     jTree.repaint();
                 }
             }
@@ -123,7 +131,8 @@ public class TaskMenu extends JPopupMenu {
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     client.src.client.Client client = Client.getClient();
                     try {
-                        client.stopTask(node.getTask().getId(), "general");
+                        if(node.getTask().getName().split("/").length == 2) client.stopTask(node.getTask().getId(), "general");
+                        else client.stopTask(node.getTask().getId(), "");
                     } catch (NoSuchUserException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {
@@ -147,7 +156,8 @@ public class TaskMenu extends JPopupMenu {
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     client.src.client.Client client = Client.getClient();
                     try {
-                        client.startTask(node.getTask().getId(), "general");
+                        if(node.getTask().getName().split("/").length == 2) client.startTask(node.getTask().getId(), "general");
+                        else client.startTask(node.getTask().getId(), "general");
                     } catch (NoSuchUserException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {

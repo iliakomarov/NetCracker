@@ -27,7 +27,7 @@ public class Session implements Runnable {
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
     private TaskTree treeNode;
-    private String currUser;
+    private User currUser;
     private boolean isLogIn;
 
     public Session(Socket socket) throws IOException {
@@ -68,7 +68,8 @@ public class Session implements Runnable {
                     }
 
                     try {
-                        treeNode = TreeLoader.loadTree(getTree.getNameTree());
+                        if (getTree.getNameTree().equals("general")) treeNode = TreeLoader.loadTree("general");
+                        else treeNode = TreeLoader.loadTree(getCurrUser().getName());
                         TTP.sendResponse(new Message("ok"), getOutputStream());
                         TTP.sendObject(treeNode, getOutputStream(), TaskTree.class);
 
@@ -98,12 +99,17 @@ public class Session implements Runnable {
                     try {
 
                         TaskTreeNode currTreeNode = null;
+                        TaskTree tree = null;
 
-                        TaskTree tree = TreeLoader.loadTree(addTask.getTreeName());
+                        if (addTask.getTreeName().equals("general")) tree = TreeLoader.loadTree("general");
+                        else tree = TreeLoader.loadTree(getCurrUser().getName());
+
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(addTask.getId());
                         addTask.getUserObject().setParentID(addTask.getId());
                         findedNode.add(addTask.getUserObject());
-                        TreeLoader.updateTree(tree, addTask.getTreeName());
+
+                        if (addTask.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
+                        else TreeLoader.updateTree(tree, getCurrUser().getName());
 
                         if (addTask.getTreeName().equals("general")){
                             HttpServer.sendToAll(tree);
@@ -137,12 +143,21 @@ public class Session implements Runnable {
 
                     try {
 
-                        TaskTree tree = TreeLoader.loadTree(deleteTask.getTreeName());
+                        TaskTree tree = null;
+
+                        if (deleteTask.getTreeName().equals("general")) tree = TreeLoader.loadTree("general");
+                        else tree = TreeLoader.loadTree(getCurrUser().getName());
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(deleteTask.getId());
                         TaskTreeNode parent = tree.getRoot().seekForTaskByID(findedNode.getParentID());
                         findedNode.setParent(parent);
                         parent.remove(findedNode);
-                        TreeLoader.updateTree(tree, deleteTask.getTreeName());
+                        if (deleteTask.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
+                        else TreeLoader.updateTree(tree, getCurrUser().getName());
+
+                        if (deleteTask.getTreeName().equals("general")){
+                            HttpServer.sendToAll(tree);
+                        }
+
                         TTP.sendResponse(new Message("ok"), getOutputStream());
 
                     } catch (IllegalStateException e) {
@@ -167,8 +182,9 @@ public class Session implements Runnable {
                     LogIn logIn = (LogIn)TTP.getObject(getInputStream(), LogIn.class);
 
                     try {
-                        if (User.logIn(logIn.getLogIn(), logIn.getPassword())){
-                            setCurrUser(logIn.getLogIn());
+                        User user = User.logIn(logIn.getLogIn(), logIn.getPassword());
+                        if (user != null){
+                            setCurrUser(user);
                             setIsLogIn(true);
                         }
                     } catch (ParserConfigurationException e) {
@@ -181,7 +197,7 @@ public class Session implements Runnable {
 
                     TTP.sendResponse(new Message("ok"), getOutputStream());
                 }else if (message.getMessage().equals("logout") && isLogIn){
-                    setCurrUser("");
+                    setCurrUser(null);
                     setIsLogIn(false);
                 }else if (message.getMessage().equals("registration") && !isLogIn()){
                     Registration registration = (Registration)TTP.getObject(getInputStream(), Registration.class);
@@ -209,10 +225,14 @@ public class Session implements Runnable {
 
                         TaskTreeNode currTreeNode = null;
 
-                        TaskTree tree = TreeLoader.loadTree(rename.getTreeName());
+                        TaskTree tree = null;
+
+                        if (rename.getTreeName().equals("general")) tree = TreeLoader.loadTree("general");
+                        else tree = TreeLoader.loadTree(getCurrUser().getName());
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(rename.getTaskId());
                         findedNode.getTask().changeName(rename.getNewName());
-                        TreeLoader.updateTree(tree, rename.getTreeName());
+                        if (rename.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
+                        else TreeLoader.updateTree(tree, getCurrUser().getName());
 
                         if (rename.getTreeName().equals("general")){
                             HttpServer.sendToAll(tree);
@@ -254,14 +274,18 @@ public class Session implements Runnable {
 
                         TaskTreeNode currTreeNode = null;
 
-                        TaskTree tree = TreeLoader.loadTree(startTask.getTreeName());
+                        TaskTree tree = null;
+
+                        if (startTask.getTreeName().equals("general")) tree = TreeLoader.loadTree("general");
+                        else tree = TreeLoader.loadTree(getCurrUser().getName());
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(startTask.getTaskId());
                         try {
                             findedNode.getTask().startTask();
                         } catch (StoppedTaskException e) {
                             e.printStackTrace();
                         }
-                        TreeLoader.updateTree(tree, startTask.getTreeName());
+                        if (startTask.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
+                        else TreeLoader.updateTree(tree, getCurrUser().getName());
 
                         if (startTask.getTreeName().equals("general")){
                             HttpServer.sendToAll(tree);
@@ -303,14 +327,18 @@ public class Session implements Runnable {
 
                         TaskTreeNode currTreeNode = null;
 
-                        TaskTree tree = TreeLoader.loadTree(stopTask.getTreeName());
+                        TaskTree tree = null;
+
+                        if (stopTask.getTreeName().equals("general")) tree = TreeLoader.loadTree("general");
+                        else tree = TreeLoader.loadTree(getCurrUser().getName());
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(stopTask.getTaskId());
                         try {
                             findedNode.getTask().stopTask();
                         } catch (StoppedTaskException e) {
                             e.printStackTrace();
                         }
-                        TreeLoader.updateTree(tree, stopTask.getTreeName());
+                        if (stopTask.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
+                        else TreeLoader.updateTree(tree, getCurrUser().getName());
 
                         if (stopTask.getTreeName().equals("general")){
                             HttpServer.sendToAll(tree);
@@ -352,14 +380,18 @@ public class Session implements Runnable {
 
                         TaskTreeNode currTreeNode = null;
 
-                        TaskTree tree = TreeLoader.loadTree(pauseTask.getTreeName());
+                        TaskTree tree = null;
+
+                        if (pauseTask.getTreeName().equals("general")) tree = TreeLoader.loadTree("general");
+                        else tree = TreeLoader.loadTree(getCurrUser().getName());
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(pauseTask.getTaskId());
                         try {
                             findedNode.getTask().pauseTask();
                         } catch (StoppedTaskException e) {
                             e.printStackTrace();
                         }
-                        TreeLoader.updateTree(tree, pauseTask.getTreeName());
+                        if (pauseTask.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
+                        else TreeLoader.updateTree(tree, getCurrUser().getName());
 
                         if (pauseTask.getTreeName().equals("general")){
                             HttpServer.sendToAll(tree);
@@ -409,11 +441,11 @@ public class Session implements Runnable {
         return this.outputStream;
     }
 
-    public String getCurrUser() {
+    public User getCurrUser() {
         return currUser;
     }
 
-    public void setCurrUser(String currUser) {
+    public void setCurrUser(User currUser) {
         this.currUser = currUser;
     }
 

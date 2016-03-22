@@ -84,4 +84,8 @@ public class RequestTaskName extends JDialog {
         //dispose();
     }
 
+    public void setTextField1(String name){
+        textField1.setText(name);
+    }
+
 }

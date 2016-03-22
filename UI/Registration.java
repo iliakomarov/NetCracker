@@ -1,4 +1,7 @@
-package Tree2.UI;
+package UI;
+
+import client.src.client.Client;
+import client.src.client.exception.NoSuchUserException;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -48,7 +51,12 @@ public class Registration extends JDialog {
     }
 
     private void onOK() {
-// add your code here
+        Client client = Client.getClient();
+        try {
+            client.Registration(textField1.getText(), textField2.getText(), textField3.getText(), passwordField1.getText());
+        } catch (NoSuchUserException e) {
+            e.printStackTrace();
+        }
         dispose(); //TODO client
     }
 

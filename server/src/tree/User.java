@@ -87,7 +87,7 @@ public class User {
         this.privateTree = privateTree;
     }*/
 
-    public static boolean logIn(String login, String password) throws ParserConfigurationException, SAXException, IOException, JAXBException {
+    public static User logIn(String login, String password) throws ParserConfigurationException, SAXException, IOException, JAXBException {
         int treeIndex = 0;
         User user = null;
         Document document = TreeLoader.getDocument("server\\src\\trees.xml");
@@ -109,10 +109,10 @@ public class User {
         user = tree.getUser();
 
         if (user.getPassword().equals(password)){
-            return true;
+            return user;
         }
 
-        return false;
+        return null;
 
     }
 
