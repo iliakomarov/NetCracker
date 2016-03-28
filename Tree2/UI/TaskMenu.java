@@ -14,6 +14,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 
 /**
@@ -177,6 +179,22 @@ public class TaskMenu extends JPopupMenu {
             });
             add(item);
         }
+        }
+        for(int i=0;i<this.getComponentCount();i++)
+        {
+            final Component comp=this.getComponent(i);
+            final Color col=comp.getBackground();
+            comp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    comp.setBackground(Color.LIGHT_GRAY);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    comp.setBackground(col);
+                }
+            });
         }
     }
 }
