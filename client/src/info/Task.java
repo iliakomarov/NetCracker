@@ -149,6 +149,9 @@ public class Task {
 
 
     public String toString() {
+        status="";
+        if (stopped) status="(complete)";
+            else if (busy) status="(busy)";
         if (status.isEmpty()) return getName();
         else return getName() + " " + status;
     }
