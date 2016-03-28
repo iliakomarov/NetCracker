@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by —ÚÂÔ‡Ì on 11.11.2015.
+ * Created by √ë√≤√•√Ø√†√≠ on 11.11.2015.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -104,7 +104,8 @@ public class Task {
         time = time / 24;
         long days = time;
 
-        return new Info(id,name,new Date(creationDate.getTime()).toString(),isBusy(),isStopped(),new String(days+"d "+hours+"h "+min+"m "+sec+"s "+ms+"ms"));
+        String a = (isBusy()) ? "Busy" : "Not busy", b = (isStopped()) ? "Stopped" : "Not stopped";
+        return new Info(id, getName(), new Date(creationDate.getTime()).toString(), a, b, new String(days + "d " + hours + "h " + min + "m " + sec + "s " + ms + "ms"));
     }
 
     public Info getSimpleInfo() //TODO info
