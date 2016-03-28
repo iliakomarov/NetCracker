@@ -1,7 +1,9 @@
 package server.src.server.session;
 
 
+import org.xml.sax.SAXParseException;
 import server.src.Exceptions.StoppedTaskException;
+import server.src.Exceptions.SuchUserAlreadyExist;
 import server.src.communications.*;
 import server.src.loader.TreeLoader;
 import server.src.server.HttpServer;
@@ -18,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.Socket;
+import java.rmi.UnmarshalException;
 
 /**
  * Created by Fadeev on 12.11.2015.
@@ -70,8 +73,10 @@ public class Session implements Runnable {
                     try {
                         if (getTree.getNameTree().equals("general")) treeNode = TreeLoader.loadTree("general");
                         else treeNode = TreeLoader.loadTree(getCurrUser().getName());
+
                         TTP.sendResponse(new Message("ok"), getOutputStream());
                         TTP.sendObject(treeNode, getOutputStream(), TaskTree.class);
+
 
                     } catch (SAXException e) {
                         e.printStackTrace();
@@ -202,14 +207,24 @@ public class Session implements Runnable {
                 }else if (message.getMessage().equals("registration") && !isLogIn()){
                     Registration registration = (Registration)TTP.getObject(getInputStream(), Registration.class);
                     try {
-                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
+                        TaskTree tree = TreeLoader.loadTree(registration.getName());
+                        TTP.sendResponse(new Message("fail"), getOutputStream());
+
                     } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
+                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
                     } catch (SAXException e) {
-                        e.printStackTrace();
+                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
+                    } catch (JAXBException e) {
+                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
+                    } catch (TransformerException e) {
+                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
+                    }
+                    catch (UnmarshalException e){
+                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
                     }
 
-                    TTP.sendResponse(new Message("fail"), getOutputStream());
+
+                    TTP.sendResponse(new Message("ok"), getOutputStream());
                 }else if (message.getMessage().equals("rename") && isLogIn) {
 
                     Rename rename = null;
@@ -426,7 +441,7 @@ public class Session implements Runnable {
                 System.out.println(message.getMessage());
                 message = null;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             //e.printStackTrace();
         }
 

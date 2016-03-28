@@ -8,6 +8,7 @@ import javax.xml.bind.PropertyException;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.Writer;
+import java.rmi.UnmarshalException;
 
 /**
  * Created by Fadeev on 12.11.2015.
@@ -19,8 +20,15 @@ public class Marshall {
         javax.xml.bind.Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
         StringReader reader = new StringReader(xmlString);
-        Object request = unmarshaller.unmarshal(reader);
-        return request;
+        try {
+            Object request = unmarshaller.unmarshal(reader);
+            return request;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+
     }
 
     public void marshall(Object object, OutputStream outputStream, Class aClass){

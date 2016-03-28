@@ -53,9 +53,14 @@ public class Registration extends JDialog {
     private void onOK() {
         Client client = Client.getClient();
         try {
-            client.Registration(textField1.getText(), textField2.getText(), textField3.getText(), passwordField1.getText());
+            if(passwordField1.getText().equals(passwordField2.getText())) {
+                client.Registration(textField1.getText(), textField2.getText(), textField3.getText(), passwordField1.getText());
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Password should equal!");
+            }
         } catch (NoSuchUserException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "User already exist!");
         }
         dispose(); //TODO client
     }

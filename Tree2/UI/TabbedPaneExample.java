@@ -14,6 +14,7 @@ import client.src.client.exception.NoSuchUserException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.rmi.UnmarshalException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -38,6 +39,9 @@ public class TabbedPaneExample extends JFrame {
             model = client.getTree(treeName);
         }
         catch (NoSuchUserException e){
+            System.out.println(e.getMessage());
+        }
+        catch (UnmarshalException e){
             System.out.println(e.getMessage());
         }
 
@@ -138,7 +142,7 @@ public class TabbedPaneExample extends JFrame {
                 Authorization dialog = new Authorization();
                 dialog.pack();
                 dialog.setVisible(true);
-                System.exit(0);
+                //System.exit(0);
             }
         });
 
@@ -200,7 +204,7 @@ public class TabbedPaneExample extends JFrame {
             //updateTree(); //TODO client
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
 
         topPanel.add(tabbedPane, BorderLayout.CENTER);

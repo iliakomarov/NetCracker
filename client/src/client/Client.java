@@ -10,6 +10,7 @@ import client.src.tree.TaskTreeNode;
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.Socket;
+import java.rmi.UnmarshalException;
 
 /**
  * Created by Fadeev on 12.11.2015.
@@ -200,7 +201,13 @@ public class Client {
         }
         TaskTree tree = null;
         if (!response.getMessage().equals("User not found!")){
-            tree = (TaskTree)getObject(TaskTree.class);
+            try{
+                tree = (TaskTree) getObject(TaskTree.class);
+            }
+            catch (ClassCastException e){
+                tree = (TaskTree) getObject(TaskTree.class);
+            }
+
         }else {
             throw new NoSuchUserException("User not exist or request has wrong data!");
         }
@@ -346,8 +353,8 @@ public class Client {
             e.printStackTrace();
         }
 
-        if (message.getMessage().equals("User not found!")){
-            throw new NoSuchUserException("User not found!");
+        if (message.getMessage().equals("fail")){
+            throw new NoSuchUserException("User already exist!");
         }
 
         if (message.getMessage().equals("ok")){

@@ -80,7 +80,7 @@ public class TTP {
         try {
             object = marshall.unmarshall(xml, aClass);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return object;
