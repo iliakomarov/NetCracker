@@ -6,7 +6,7 @@ package server.src.info;
 
 import server.src.Exceptions.BusyTaskException;
 import server.src.Exceptions.StoppedTaskException;
-import server.src.generations.IDGenerator;
+import server.src.Generations.IDGenerator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,7 +33,7 @@ public class Task {
     private Date creationDate;
     @XmlElement(name = "usingDate")
     private ArrayList<Date[]> usingDate;
-    
+    @XmlElement(name = "status")
     private String status;
 
     public Task(){}
@@ -68,7 +68,7 @@ public class Task {
         checkStop();
         usingDate.get(usingDate.size() - 1)[1] = new Date();
         busy = false;
-        status="";
+        status="(paused)";
         return true;
     }
 
@@ -131,12 +131,14 @@ public class Task {
         checkBusy();
         long time = 0;
         for (Date[] d : usingDate) {
+            if (d[1] != null)
             time += d[1].getTime() - d[0].getTime();
         }
         return time;
     }
 
     public String toString() {
+        if (status == null) return getName();
         if (status.isEmpty()) return getName();
         else return getName() + " " + status;
     }

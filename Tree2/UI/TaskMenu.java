@@ -116,7 +116,7 @@ public class TaskMenu extends JPopupMenu {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
-                    TaskTreeNode node = (TaskTreeNode) jTree.getLastSelectedPathComponent();
+                    client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     if (node != null) try {
                         node.pauseTask();
                     } catch (StoppedTaskException e1) {

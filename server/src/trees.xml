@@ -5,30 +5,40 @@
 
 
 
-<taskTree>
-    <taskTreeNode>
-        <allowsChildren>true</allowsChildren>
-        <userObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="task">
-            <id>1</id>
-            <name>root</name>
-            <busy>true</busy>
-            <stopped>false</stopped>
-            <creationDate>2016-03-22T12:20:43.754+04:00</creationDate>
-            <usingDate>
-                <item>2016-03-28T02:42:55.843+04:00</item>
-                <item xsi:nil="true"/>
-            </usingDate>
-        </userObject>
-        <parentID>0</parentID>
-        <children/>
-    </taskTreeNode>
-    <user>
-        <name>test</name>
-        <surname>test</surname>
-        <login>1</login>
-        <password>123</password>
-    </user>
-</taskTree>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <taskTree>
     <taskTreeNode>
         <allowsChildren>true</allowsChildren>
@@ -44,7 +54,72 @@
             </usingDate>
         </userObject>
         <parentID>0</parentID>
-        <children/>
+        <children>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>105</id>
+                    <name>main general task/general</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T20:54:07.171+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T20:54:14.621+04:00</item>
+                        <item>2016-03-28T20:54:22.801+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>108</id>
+                    <name>1/general</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T21:01:45.667+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T21:02:13.658+04:00</item>
+                        <item>2016-03-28T21:11:16.052+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>109</id>
+                    <name>2/general</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T21:03:03.139+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T21:03:20.557+04:00</item>
+                        <item>2016-03-28T21:03:27.701+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>110</id>
+                    <name>3/general</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T21:03:10.815+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T21:03:32.235+04:00</item>
+                        <item>2016-03-28T21:03:36.927+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+        </children>
     </taskTreeNode>
     <user>
         <name>general</name>
@@ -53,6 +128,10 @@
         <password>123</password>
     </user>
 </taskTree>
+
+
+
+
 <taskTree>
     <taskTreeNode>
         <allowsChildren>true</allowsChildren>
@@ -60,52 +139,101 @@
             <id>1</id>
             <name>root</name>
             <busy>false</busy>
-            <stopped>false</stopped>
-            <creationDate>2016-03-28T03:07:46.421+04:00</creationDate>
+            <stopped>true</stopped>
+            <creationDate>2016-03-28T20:29:54.643+04:00</creationDate>
+            <usingDate>
+                <item>2016-03-28T20:37:30.233+04:00</item>
+                <item>2016-03-28T20:48:54.146+04:00</item>
+            </usingDate>
+            <usingDate/>
         </userObject>
         <parentID>0</parentID>
+        <children>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>104</id>
+                    <name>1</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T20:53:16.487+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T20:53:18.649+04:00</item>
+                        <item>2016-03-28T20:53:23.032+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>106</id>
+                    <name>2</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T20:56:11.320+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T20:56:13.884+04:00</item>
+                        <item xsi:nil="true"/>
+                    </usingDate>
+                    <usingDate>
+                        <item>2016-03-28T20:57:39.537+04:00</item>
+                        <item xsi:nil="true"/>
+                    </usingDate>
+                    <usingDate>
+                        <item>2016-03-28T20:57:49.520+04:00</item>
+                        <item>2016-03-28T20:57:52.776+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>107</id>
+                    <name>3</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T20:59:18.116+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T20:59:20.996+04:00</item>
+                        <item>2016-03-28T20:59:49.601+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+            <child xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="taskTreeNode">
+                <allowsChildren>true</allowsChildren>
+                <userObject xsi:type="task">
+                    <id>111</id>
+                    <name>4</name>
+                    <busy>false</busy>
+                    <stopped>true</stopped>
+                    <creationDate>2016-03-28T21:15:45.542+04:00</creationDate>
+                    <usingDate>
+                        <item>2016-03-28T21:15:47.575+04:00</item>
+                        <item xsi:nil="true"/>
+                    </usingDate>
+                    <usingDate>
+                        <item>2016-03-28T21:15:59.312+04:00</item>
+                        <item xsi:nil="true"/>
+                    </usingDate>
+                    <usingDate>
+                        <item>2016-03-28T21:16:07.183+04:00</item>
+                        <item>2016-03-28T21:16:09.954+04:00</item>
+                    </usingDate>
+                    <status>(stopped)</status>
+                </userObject>
+                <parentID>1</parentID>
+            </child>
+        </children>
     </taskTreeNode>
     <user>
-        <name>11</name>
-        <surname>11</surname>
-        <login>11</login>
-        <password>11</password>
-    </user>
-</taskTree>
-<taskTree>
-    <taskTreeNode>
-        <allowsChildren>true</allowsChildren>
-        <userObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="task">
-            <id>1</id>
-            <name>root</name>
-            <busy>false</busy>
-            <stopped>false</stopped>
-            <creationDate>2016-03-28T11:57:41.415+04:00</creationDate>
-        </userObject>
-        <parentID>0</parentID>
-    </taskTreeNode>
-    <user>
-        <name>12</name>
-        <surname>12</surname>
-        <login>12</login>
-        <password>12</password>
-    </user>
-</taskTree>
-<taskTree>
-    <taskTreeNode>
-        <allowsChildren>true</allowsChildren>
-        <userObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="task">
-            <id>2</id>
-            <name>root</name>
-            <busy>false</busy>
-            <stopped>false</stopped>
-            <creationDate>2016-03-28T12:02:33.183+04:00</creationDate>
-        </userObject>
-        <parentID>0</parentID>
-    </taskTreeNode>
-    <user>
-        <name>2</name>
-        <surname>2</surname>
+        <name>1</name>
+        <surname>1</surname>
         <login>2</login>
         <password>2</password>
     </user>
