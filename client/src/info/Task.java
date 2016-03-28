@@ -34,6 +34,8 @@ public class Task {
     @XmlElement(name = "usingDate")
     private ArrayList<Date[]> usingDate;
 
+    private String status;
+
     public Task(){}
 
     private Task(String name) throws IOException {
@@ -49,6 +51,7 @@ public class Task {
         this.busy=this.stopped=false;
         this.creationDate = new Date();
         this.usingDate=new ArrayList<>();
+        status="";
     }
 
     public static Task getInstance(String name) throws IOException {
@@ -62,6 +65,7 @@ public class Task {
         if (usingDate == null) usingDate = new ArrayList<>();
         usingDate.add(date);
         busy = true;
+        status="(busy)";
         return true;
     }
 
@@ -69,6 +73,7 @@ public class Task {
         checkStop();
         usingDate.get(usingDate.size() - 1)[1] = new Date();
         busy = false;
+        status="";
         return true;
     }
 
@@ -83,6 +88,7 @@ public class Task {
     public boolean stopTask() throws StoppedTaskException {
         pauseTask();
         stopped = true;
+        status="(stopped)";
         return true;
     }
     public boolean changeName(String name)
@@ -142,8 +148,9 @@ public class Task {
     }
 
 
-    public String toString(){
-        return getName();
+    public String toString() {
+        if (status.isEmpty()) return getName();
+        else return getName() + " " + status;
     }
 
 }
