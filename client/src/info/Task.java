@@ -33,7 +33,7 @@ public class Task {
     private Date creationDate;
     @XmlElement(name = "usingDate")
     private ArrayList<Date[]> usingDate;
-    @XmlElement(name = "status")
+
     private String status;
 
     public Task(){}
@@ -73,7 +73,7 @@ public class Task {
         checkStop();
         usingDate.get(usingDate.size() - 1)[1] = new Date();
         busy = false;
-        status="(paused)";
+        status="";
         return true;
     }
 
@@ -137,7 +137,6 @@ public class Task {
         long time = 0;
         if (usingDate != null) {
             for (Date[] d : usingDate) {
-                if (d[1] != null)
                 time += d[1].getTime() - d[0].getTime();
             }
         }
@@ -150,7 +149,6 @@ public class Task {
 
 
     public String toString() {
-        if (status == null) return getName();
         if (status.isEmpty()) return getName();
         else return getName() + " " + status;
     }
