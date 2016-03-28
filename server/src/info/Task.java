@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Ñòåïàí on 11.11.2015.
+ * Created by Fadeev on 11.11.2015.
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
