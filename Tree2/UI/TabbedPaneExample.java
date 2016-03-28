@@ -54,8 +54,9 @@ public class TabbedPaneExample extends JFrame {
             JTree jTree = new JTree(root, true);
             jTree.setLocation(panel.getLocation());
             jTree.setSize(240, 160);
-            panel.setLayout(new BorderLayout());
-            panel.add(jTree, BorderLayout.CENTER);
+            panel.setLayout(new FlowLayout(0));
+            panel.add(jTree);
+            panel.setBackground(Color.WHITE);
             JScrollPane scrollPane = new JScrollPane();
             scrollPane.setViewportView(panel);
             tabbedPane.addTab("Task", scrollPane);
