@@ -122,7 +122,7 @@ public class TabbedPaneExample extends JFrame {
                     else client = Client.getClient().getTree("");
                     stat = client.getStatistic();
                 } catch (BusyTaskException e1) {
-                    e1.printStackTrace();//TODO exception
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);//TODO exception
                 } catch (server.src.Exceptions.BusyTaskException e1) {
                     e1.printStackTrace();
                 } catch (NoSuchUserException e1) {
@@ -142,6 +142,20 @@ public class TabbedPaneExample extends JFrame {
                 Authorization dialog = new Authorization();
                 dialog.pack();
                 dialog.setVisible(true);
+
+                try {
+                    tabbedPane.removeAll();
+                    makeTree("");
+                    updateTree();
+                    makeTree("general");
+                    updateTree();
+                    makeMenu();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchUserException e1) {
+                    e1.printStackTrace();
+                }
+
                 //System.exit(0);
             }
         });
@@ -176,6 +190,7 @@ public class TabbedPaneExample extends JFrame {
                             e.printStackTrace();
                         }
                         updateTree();
+                        tabbedPane.setSelectedIndex(1);
                         System.out.println("Tree was refresh!");
                     }
 

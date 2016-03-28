@@ -20,9 +20,15 @@ public class HttpServer {
 
     private static Logger log = Logger.getLogger(HttpServer.class.getName());
     private static ArrayList<Socket> clients = new ArrayList<>();
+    private static int portNumber = 9999;
+
+    public HttpServer(int portNumber){
+        this.portNumber = portNumber;
+    }
+
     public static void main(String[] args) {
 
-        int portNumber = 9999;
+
         try {
             ServerSocket serverSocket = new ServerSocket(portNumber);
             log.info("Server starting on port " + portNumber);
