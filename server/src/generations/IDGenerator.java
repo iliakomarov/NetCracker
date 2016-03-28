@@ -1,12 +1,10 @@
-package server.src.Generations;
-
-import java.io.Serializable;
+package server.src.generations;
 
 /**
  * Created by Степан on 11.11.2015.
  */
-public class IDGenerator implements Serializable {
-    private static int id;
+public class IDGenerator {
+    private int id;
     private static IDGenerator instance;
 
     private IDGenerator() {
@@ -18,11 +16,12 @@ public class IDGenerator implements Serializable {
         else return instance;
     }
 
-    public static void setId(int num){
+    public void setId(int num){
         id = num;
     }
 
     public int getId() {
         return id++;
     }
+
 }
