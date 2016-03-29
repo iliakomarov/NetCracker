@@ -14,6 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -55,6 +56,7 @@ public class TaskMenu extends JPopupMenu {
                     }
                     if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
                     jTree.repaint();
+                    jTree.expandPath(new TreePath(model.getPathToRoot(newChild)));
                 }
             }
         });
