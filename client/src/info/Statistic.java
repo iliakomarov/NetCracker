@@ -8,7 +8,7 @@ import javax.swing.tree.MutableTreeNode;
 import java.util.*;
 
 /**
- * Created by —ÚÂÔ‡Ì on 11.11.2015.
+ * Created by √ë√≤√•√Ø√†√≠ on 11.11.2015.
  */
 public class Statistic {
     private ArrayList<Info> info;
@@ -17,18 +17,22 @@ public class Statistic {
     public Statistic(TaskTree tree) throws BusyTaskException, Tree2.src.Exceptions.BusyTaskException {
         info = new ArrayList<>();
         MutableTreeNode root = (MutableTreeNode) tree.getRoot();
-        Queue q = new LinkedList();
+        LinkedList q = new LinkedList();
         Enumeration en = root.children();
         while (en.hasMoreElements()) {
-            q.add(en.nextElement());
+            q.addFirst(en.nextElement());
         }
         while (!q.isEmpty()) {
-            TaskTreeNode n = (TaskTreeNode) q.remove();
+            TaskTreeNode n = (TaskTreeNode) q.removeFirst();
             Info fullInfo = n.getFullInfo();
             paramsCount = fullInfo.getLength();
+            String s="";
+            for(int i=0;i<n.getLevel()-1;i++) s+="   ";
+            fullInfo.setInfoAt(0,s+fullInfo.getInfoAt(0).toString());
             info.add(fullInfo);
-            for (int i = 0; i < n.getChildCount(); i++) {
-                q.add(n.getChildAt(i));
+            final int childCount = n.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                q.addFirst(n.getChildAt(childCount-i-1));
             }
         }
     }
