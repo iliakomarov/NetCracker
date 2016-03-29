@@ -1,7 +1,7 @@
 package client.src.info;
 
 /**
- * Created by Степан on 14.11.2015.
+ * Created by Г‘ГІГҐГЇГ Г­ on 14.11.2015.
  */
 public class Info {
     private Object[] info;
@@ -27,5 +27,10 @@ public class Info {
 
     public Object getInfoAt(int index) {
         return info[index];
+    }
+    
+    public void setInfoAt(int index, Object i)
+    {
+        info[index]=i;
     }
 }
