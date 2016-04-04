@@ -19,13 +19,24 @@ public class RequestTaskName extends JDialog {
 
     public int showDialog() {
         pack();
+        textField1.setText(taskName);
         setVisible(true);
         return status;
+    }
+    
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     private String taskName;
 
-    public RequestTaskName() {
+    public RequestTaskName()
+    {
+        this("");
+    }
+
+    public RequestTaskName(String name) {
+        textField1.setText(name);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
