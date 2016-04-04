@@ -56,7 +56,7 @@ public class TaskMenu extends JPopupMenu {
                     }
                     if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
                     jTree.repaint();
-                    jTree.expandPath(new TreePath(model.getPathToRoot(newChild)));
+                    if (node != null) jTree.expandPath(new TreePath(model.getPathToRoot(newChild)));
                 }
             }
         });
@@ -80,6 +80,7 @@ public class TaskMenu extends JPopupMenu {
                 }
                 if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
                 jTree.repaint();
+                setVisible(false);
             }
         });
         add(item);
@@ -89,8 +90,9 @@ public class TaskMenu extends JPopupMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                client.src.tree.TaskTreeNode pathForLocation = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
+                if (pathForLocation != null) req.setTaskName(pathForLocation.getTask().getName());
                 if (req.showDialog() == 1) {
-                    client.src.tree.TaskTreeNode pathForLocation = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     if (node.getTask().getName().indexOf("root") < 0 ) {
@@ -118,7 +120,7 @@ public class TaskMenu extends JPopupMenu {
         add(item);
 
         client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
-        if (!node.getTask().isStopped()) {
+        if (node!=null && node.getTask()!= null && !node.getTask().isStopped()) {
         if (node.getTask().isBusy()) {
             item = new JMenuItem("Pause task");
             item.addActionListener(new ActionListener() {
