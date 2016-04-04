@@ -21,7 +21,7 @@ import java.util.Queue;
 import java.util.Vector;
 
 /**
- * Created by —ÚÂÔ‡Ì on 11.11.2015.
+ * Created by √ë√≤√•√Ø√†√≠ on 11.11.2015.
  */
 
 /*
@@ -68,7 +68,22 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
     }
 
     public Info getFullInfo() throws BusyTaskException, server.src.Exceptions.BusyTaskException {
-        return getTask().getFullInfo();
+        Info fullInfo = getTask().getFullInfo();
+
+        long time=getWorkingTime();
+        long ms = time % 1000;
+        time = time / 1000;
+        long sec = time % 60;
+        time= time / 60;
+        long min = time % 60;
+        time = time / 60;
+        long hours = time % 24;
+        time = time / 24;
+        long days = time;
+        String t=new String(days + "d " + hours + "h " + min + "m " + sec + "s " + ms + "ms");
+
+        fullInfo.setInfoAt(fullInfo.getLength(),t);
+        return fullInfo;
     }
 
     public TaskTreeNode(){
