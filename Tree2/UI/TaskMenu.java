@@ -67,6 +67,7 @@ public class TaskMenu extends JPopupMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                if (JOptionPane.showConfirmDialog(null, "Are you sure to remove task?", "Warning", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
                 DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
                 client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                 client.src.client.Client client = Client.getClient();
@@ -81,6 +82,7 @@ public class TaskMenu extends JPopupMenu {
                 if (node != null && node.getParent() != null) model.removeNodeFromParent(node);
                 jTree.repaint();
                 setVisible(false);
+                }
             }
         });
         add(item);
