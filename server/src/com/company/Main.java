@@ -11,13 +11,10 @@ public class Main {
 
         boolean isFile = false;
 
-        while (!isFile) {
-            System.out.println("Enter path to config file:");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String config = reader.readLine();
+
             FileReader fileReader = null;
             try {
-                fileReader = new FileReader(config);
+                fileReader = new FileReader(new File("").getAbsolutePath() + File.separator + "port.conf");
             } catch (FileNotFoundException e) {
                 System.out.println("File not found!");
             }
@@ -39,7 +36,6 @@ public class Main {
             } catch (NullPointerException e) {
                 System.out.println("Enter another file!");
             }
-        }
 
     }
 }

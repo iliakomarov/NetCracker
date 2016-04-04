@@ -2,6 +2,7 @@ package client.src.client;
 
 
 import client.src.client.exception.NoSuchUserException;
+import client.src.client.exception.RegistrationException;
 import client.src.communications.*;
 import client.src.generations.IDGenerator;
 import client.src.tree.TaskTree;
@@ -24,8 +25,25 @@ public class Client {
     private ConnectionToServer server;
     private boolean isRefreshGeneralTree;
 
-    public Client(){
+    public Client() throws IOException {
         Socket clientSocket = null;
+
+
+        FileReader fileReader = new FileReader(new File("").getAbsolutePath() + File.separator + "config.conf");
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        try {
+            String[] serverSocket = bufferedReader.readLine().split(":");
+            this.hostName = serverSocket[0];
+            portNumber = Integer.parseInt(serverSocket[1]);
+        }
+        catch (NullPointerException e){
+            System.out.println("Socket set on default(localhost:9999)");
+            this.hostName = "localhost";//default
+            portNumber = 9999;//default
+        }
+
+
+
 
         try {
             clientSocket = new Socket(hostName, portNumber);
@@ -65,8 +83,14 @@ public class Client {
 
 
     public static client.src.client.Client getClient() {
-        if (client == null) return client = new client.src.client.Client();
+        if (client == null) try {
+            return client = new Client();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         else return client;
+
+        return null;
     }
 
 
@@ -235,7 +259,7 @@ public class Client {
             e.printStackTrace();
         }
         finally {
-            FileOutputStream fileOutputStream = new FileOutputStream("client\\src\\lastID.txt");
+            FileOutputStream fileOutputStream = new FileOutputStream(new File("").getAbsolutePath() + File.separator + "lastID.xml");
             DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
             IDGenerator idGenerator = IDGenerator.getInstance();
             int last = idGenerator.getId();
@@ -297,7 +321,7 @@ public class Client {
     }
 
 
-    public boolean LogIn(String login, String password){
+    public boolean LogIn(String login, String password) throws NoSuchUserException {
         try {
             sendObject(new Message("login"), getOutputStream(), Message.class);
         } catch (IOException e) {
@@ -321,6 +345,10 @@ public class Client {
         if (message.getMessage().equals("ok")){
             return true;
         }
+
+        if (message.getMessage().equals("fail")){
+            throw new NoSuchUserException("User not found!");
+        }
         return false;
     }
 
@@ -332,7 +360,7 @@ public class Client {
         }
     }
 
-    public boolean Registration(String name, String surname, String login, String password) throws NoSuchUserException {
+    public boolean Registration(String name, String surname, String login, String password) throws NoSuchUserException, RegistrationException {
         try {
             sendObject(new Message("registration"), getOutputStream(), Message.class);
         } catch (IOException e) {
@@ -355,6 +383,10 @@ public class Client {
 
         if (message.getMessage().equals("fail")){
             throw new NoSuchUserException("User already exist!");
+        }
+
+        if (message.getMessage().equals("logout")){
+            throw new RegistrationException("Log out!");
         }
 
         if (message.getMessage().equals("ok")){

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class Task {
 
     private Task(String name) throws IOException {
 
-        FileInputStream fileInputStream = new FileInputStream("client\\src\\lastID.txt");
+        FileInputStream fileInputStream = new FileInputStream(new File("").getAbsolutePath() + File.separator + "lastID.txt");
         DataInputStream dataInputStream = new DataInputStream(fileInputStream);
         int lastID = dataInputStream.readInt();
         IDGenerator generator = IDGenerator.getInstance();

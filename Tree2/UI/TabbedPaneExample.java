@@ -2,10 +2,6 @@ package Tree2.UI;
 
 
 import Tree2.src.Exceptions.BusyTaskException;
-import Tree2.src.Info.Statistic;
-import Tree2.src.Tree.TaskTree;
-import Tree2.src.Tree.TaskTreeNode;
-import Tree2.src.Tree.User;
 import UI.Authorization;
 import UI.RequestTaskName;
 import client.src.client.Client;
@@ -16,8 +12,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.rmi.UnmarshalException;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
@@ -98,17 +92,35 @@ public class TabbedPaneExample extends JFrame {
         JMenu menuStat = new JMenu("Statistics");
         JMenu menuUser = new JMenu("Change user");
         JMenu menuLogin = new JMenu("Log In");
+        JMenu menuLogout = new JMenu("Log Out");
 
         menuAdd.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (req.showDialog() == 1) {
-                    TaskTreeNode newChild = TaskTreeNode.getInstance(req.getTaskName());
+                    client.src.tree.TaskTreeNode newChild = null;
+                    try {
+                        newChild = client.src.tree.TaskTreeNode.getInstance(req.getTaskName());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) model.getRoot();
-                    model.insertNodeInto(newChild, node, node.getChildCount());
+                    client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) tree.getLastSelectedPathComponent();
+                    client.src.client.Client client = Client.getClient();
+                    try {
+                        if(node.getTask().getName().split("/").length == 2) {
+                            newChild.getTask().changeName(newChild.getTask().getName() + "/general");
+                            client.addTask(newChild, node.getTask().getId(), "general");
+                        }
+                        else client.addTask(newChild, node.getTask().getId(), "");
+                    } catch (NoSuchUserException e1) {
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    if (node != null) model.insertNodeInto(newChild, node, node.getChildCount());
+                    tree.repaint();
                 }
-                updateTree(); //TODO client
             }
         });
         menuStat.addMouseListener(new MouseAdapter() {
@@ -142,7 +154,8 @@ public class TabbedPaneExample extends JFrame {
                 Authorization dialog = new Authorization();
                 dialog.pack();
                 dialog.setVisible(true);
-
+                String login = dialog.getTextFieldLogin().getText();
+                setTitle("Task tracker" + " | " + login);
                 try {
                     tabbedPane.removeAll();
                     makeTree("");
@@ -161,9 +174,20 @@ public class TabbedPaneExample extends JFrame {
         });
 
 
-        menu.add(menuAdd);
+        menuLogout.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                Client client = Client.getClient();
+                client.LogOut();
+                tabbedPane.removeAll();
+
+            }
+        });
+        //menu.add(menuAdd);
         menu.add(menuStat);
         menu.add(menuUser);
+        menu.add(menuLogout);
         setJMenuBar(menu);
     }
 
@@ -181,7 +205,6 @@ public class TabbedPaneExample extends JFrame {
                 while (true) {
                     if (client.isRefreshGeneralTree()) {
                         client.setIsRefreshGeneralTree(false);
-                        tabbedPane.remove(1);
                         try {
                             makeTree("general");
                         } catch (IOException e) {
@@ -189,8 +212,11 @@ public class TabbedPaneExample extends JFrame {
                         } catch (NoSuchUserException e) {
                             e.printStackTrace();
                         }
+                        int currTab = tabbedPane.getSelectedIndex();
                         updateTree();
-                        tabbedPane.setSelectedIndex(1);
+                        tabbedPane.setSelectedIndex(currTab);
+                        tabbedPane.remove(1);
+                        JOptionPane.showMessageDialog(null, "Tree was refresh!");
                         System.out.println("Tree was refresh!");
                     }
 
@@ -209,7 +235,8 @@ public class TabbedPaneExample extends JFrame {
             Authorization dialog = new Authorization();
             dialog.pack();
             dialog.setVisible(true);
-
+            String login = dialog.getTextFieldLogin().getText();
+            setTitle("Task tracker" + " | " + login);
             makeTree("");
             updateTree();
             makeTree("general");

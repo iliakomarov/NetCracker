@@ -17,8 +17,7 @@ public class RequestTaskName extends JDialog {
         return taskName;
     }
 
-    public int showDialog()
-    {
+    public int showDialog() {
         pack();
         setVisible(true);
         return status;
@@ -69,22 +68,22 @@ public class RequestTaskName extends JDialog {
     private void onOK() {
         client.src.client.Client client = Client.getClient();
 
-        taskName=textField1.getText();
+        taskName = textField1.getText();
         textField1.setText("");
-        status=1;
+        status = 1;
         setVisible(false);
         //dispose();
     }
 
     private void onCancel() {
 // add your code here if necessary
-        status=0;
+        status = 0;
         textField1.setText("");
         setVisible(false);
         //dispose();
     }
 
-    public void setTextField1(String name){
+    public void setTextField1(String name) {
         textField1.setText(name);
     }
 

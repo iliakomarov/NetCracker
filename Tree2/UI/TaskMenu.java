@@ -93,20 +93,25 @@ public class TaskMenu extends JPopupMenu {
                     client.src.tree.TaskTreeNode pathForLocation = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
                     DefaultTreeModel model = (DefaultTreeModel) jTree.getModel();
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) jTree.getLastSelectedPathComponent();
-                    client.src.client.Client client = Client.getClient();
-                    try {
-                        if(node.getTask().getName().split("/").length == 2) client.rename(req.getTaskName() + "/general", node.getTask().getId(), "general");
-                        else client.rename(req.getTaskName(), node.getTask().getId(), "");
-                    } catch (NoSuchUserException e1) {
-                        e1.printStackTrace();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                    if (node.getTask().getName().indexOf("root") < 0 ) {
+                        client.src.client.Client client = Client.getClient();
+                        try {
+                            if (node.getTask().getName().split("/").length == 2)
+                                client.rename(req.getTaskName() + "/general", node.getTask().getId(), "general");
+                            else client.rename(req.getTaskName(), node.getTask().getId(), "");
+                        } catch (NoSuchUserException e1) {
+                            e1.printStackTrace();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        if (node.getTask().getName().split("/").length == 2) {
+                            if (pathForLocation != null) pathForLocation.renameTask(req.getTaskName() + "/general");
+                        } else pathForLocation.renameTask(req.getTaskName());
+                        jTree.repaint();
                     }
-                    if(node.getTask().getName().split("/").length == 2) {
-                        if (pathForLocation != null) pathForLocation.renameTask(req.getTaskName() + "/general");
+                    else {
+                        JOptionPane.showMessageDialog(null, "Root can not be renamed!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
-                    else pathForLocation.renameTask(req.getTaskName());
-                    jTree.repaint();
                 }
             }
         });

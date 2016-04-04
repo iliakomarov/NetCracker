@@ -14,7 +14,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Vector;
 
 /**
@@ -90,7 +93,9 @@ public class User {
     public static User logIn(String login, String password) throws ParserConfigurationException, SAXException, IOException, JAXBException {
         int treeIndex = 0;
         User user = null;
-        Document document = TreeLoader.getDocument("server\\src\\trees.xml");
+        String s = new File("").getAbsolutePath() + File.separator + "trees.xml";
+        System.out.println("S:" + s);
+        Document document = TreeLoader.getDocument(new File("").getAbsolutePath() + File.separator + "trees.xml");
         NodeList treeList = document.getElementsByTagName("taskTree");
         Node node = TreeLoader.findTreeByUserLogin(treeList, login);
         for (int i = 0; i < treeList.getLength(); i++) {
@@ -108,6 +113,7 @@ public class User {
         TaskTree tree = (TaskTree)marshall.unmarshall(xml, TaskTree.class);
         user = tree.getUser();
 
+
         if (user.getPassword().equals(password)){
             return user;
         }
@@ -121,7 +127,7 @@ public class User {
         TaskTree tree = new TaskTree(TaskTreeNode.getInstance("root"));
         User user = new User(name, surname, login, password);
         tree.setUser(user);
-        Document document = TreeLoader.getDocument("server\\src\\trees.xml");
+        Document document = TreeLoader.getDocument(new File("").getAbsolutePath() + File.separator + "trees.xml");
         TreeLoader.addTree(tree, name, document);
 
         return true;

@@ -15,7 +15,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Fadeev on 21.11.2015.
@@ -80,7 +79,7 @@ public class TreeLoader {
         DOMImplementation domImpl = doc.getImplementation();
         DocumentType doctype = domImpl.createDocumentType("doctype",
                 "PublicIdentifier",
-                "treesDTD.dtd");
+                "trees/treesDTD.dtd");
         transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
         transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
         transformer.transform(new DOMSource(doc), new StreamResult(writer));

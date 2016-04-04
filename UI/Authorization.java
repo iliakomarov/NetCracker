@@ -1,6 +1,7 @@
 package UI;
 
 import client.src.client.Client;
+import client.src.client.exception.NoSuchUserException;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -12,6 +13,10 @@ public class Authorization extends JDialog {
     private JTextField textFieldLogin;
     private JPasswordField passwordPasswordField;
     private JButton buttonReg;
+
+    public JTextField getTextFieldLogin(){
+        return textFieldLogin;
+    }
 
     public Authorization() {
         setTitle("Authorization");
@@ -58,7 +63,12 @@ public class Authorization extends JDialog {
 
     private void onOK() {
         Client client = Client.getClient();
-        client.LogIn(textFieldLogin.getText(), passwordPasswordField.getText());
+        try {
+            client.LogIn(textFieldLogin.getText(), passwordPasswordField.getText());
+        } catch (NoSuchUserException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "User not found!");
+        }
         dispose();//TODO client
     }
 

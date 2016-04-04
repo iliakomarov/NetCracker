@@ -15,7 +15,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Client client = new Client();
-        client.LogIn("d", "def");
+        try {
+            client.LogIn("d", "def");
+        } catch (NoSuchUserException e) {
+            e.printStackTrace();
+        }
         //client.LogOut();
         /*try {
             client.Registration("general", "a", "a", "a");

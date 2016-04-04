@@ -1,6 +1,9 @@
 package server.src.server.session;
 
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXParseException;
 import server.src.Exceptions.StoppedTaskException;
 import server.src.Exceptions.SuchUserAlreadyExist;
@@ -191,6 +194,10 @@ public class Session implements Runnable {
                         if (user != null){
                             setCurrUser(user);
                             setIsLogIn(true);
+                            TTP.sendResponse(new Message("ok"), getOutputStream());
+                        }
+                        else {
+                            TTP.sendResponse(new Message("fail"), getOutputStream());
                         }
                     } catch (ParserConfigurationException e) {
                         e.printStackTrace();
@@ -200,23 +207,29 @@ public class Session implements Runnable {
                         e.printStackTrace();
                     }
 
-                    TTP.sendResponse(new Message("ok"), getOutputStream());
+
                 }else if (message.getMessage().equals("logout") && isLogIn){
                     setCurrUser(null);
                     setIsLogIn(false);
                 }else if (message.getMessage().equals("registration") && !isLogIn()){
                     Registration registration = (Registration)TTP.getObject(getInputStream(), Registration.class);
                     try {
-                        TaskTree tree = TreeLoader.loadTree(registration.getName());
-                        TTP.sendResponse(new Message("fail"), getOutputStream());
+                        Document document = TreeLoader.getDocument(new File("").getAbsolutePath() + File.separator + "trees.xml");
+                        NodeList treeList = document.getElementsByTagName("taskTree");
+
+                        Node node = TreeLoader.findTreeByUserName(treeList, registration.getName());
+                        Node node1 = TreeLoader.findTreeByUserLogin(treeList, registration.getLogin());
+
+                        if (TreeLoader.findTreeByUserName(treeList, registration.getName()) != null || TreeLoader.findTreeByUserLogin(treeList, registration.getLogin()) != null) {
+                            TTP.sendResponse(new Message("fail"), getOutputStream());
+                        }
+                        else {
+                            throw new SAXException();
+                        }
 
                     } catch (ParserConfigurationException e) {
                         User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
                     } catch (SAXException e) {
-                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
-                    } catch (JAXBException e) {
-                        User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
-                    } catch (TransformerException e) {
                         User.Registration(registration.getName(), registration.getSurname(), registration.getLogin(), registration.getPassword());
                     }
                     catch (UnmarshalException e){
@@ -225,7 +238,10 @@ public class Session implements Runnable {
 
 
                     TTP.sendResponse(new Message("ok"), getOutputStream());
-                }else if (message.getMessage().equals("rename") && isLogIn) {
+                }else if (message.getMessage().equals("registration") && isLogIn()){
+                    TTP.sendResponse(new Message("logout"), getOutputStream());
+                }
+                else if (message.getMessage().equals("rename") && isLogIn) {
 
                     Rename rename = null;
                     try {
@@ -442,7 +458,7 @@ public class Session implements Runnable {
                 message = null;
             }
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
     }

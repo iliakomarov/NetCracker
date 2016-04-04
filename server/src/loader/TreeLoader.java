@@ -15,6 +15,8 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -26,10 +28,25 @@ public class TreeLoader {
     //TODO Loading tree
     //TODO Marshal tree
 
+    private URL url;
+
+    public static URL getResource(){
+        String p = new File("").getAbsolutePath() + File.separator + "trees.xml";
+        URL url = TreeLoader.class.getResource("C:/Users/Fadeev/IdeaProjects/NetCracker/trees.xml");
+        return TreeLoader.class.getResource("C:/Users/Fadeev/IdeaProjects/NetCracker/trees.xml");
+    }
+
+    public static InputStream getResourceStream(String path){
+        return TreeLoader.class.getResourceAsStream(new File("").getAbsolutePath() + File.separator + "trees.xml");
+    }
+
+
+
     public static void addTree(TaskTree treeNode,String name , Document document) {
         try {
             String xmlTree = marshalTree(treeNode, name);
-            FileWriter fileWriter = new FileWriter("server\\src\\trees.xml", false);
+
+            FileWriter fileWriter = new FileWriter(new File("").getAbsolutePath() + File.separator + "trees.xml", false);
             Element node =  DocumentBuilderFactory
                     .newInstance()
                     .newDocumentBuilder()
@@ -80,11 +97,8 @@ public class TreeLoader {
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
         transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, "publicId");
         DOMImplementation domImpl = doc.getImplementation();
-        DocumentType doctype = domImpl.createDocumentType("doctype",
-                "PublicIdentifier",
-                "treesDTD.dtd");
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
+        //transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC, doctype.getPublicId());
+        //transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, doctype.getSystemId());
         transformer.transform(new DOMSource(doc), new StreamResult(writer));
     }
 
@@ -95,7 +109,7 @@ public class TreeLoader {
         f.setNamespaceAware(true);
         f.setValidating(false);
         DocumentBuilder builder = f.newDocumentBuilder();
-        Document doc = builder.parse(fileName);
+        Document doc = builder.parse(new File("").getAbsolutePath() + File.separator + "trees.xml");
 
         return doc;
     }
@@ -114,7 +128,7 @@ public class TreeLoader {
     }
 
     public static TaskTree loadTree(String name) throws org.xml.sax.SAXException, IOException, ParserConfigurationException, TransformerException, JAXBException {
-        Document document = getDocument("server\\src\\trees.xml");
+        Document document = getDocument(new File("").getAbsolutePath() + File.separator + "trees.xml");
 
         NodeList treeList = document.getElementsByTagName("taskTree");
         TaskTreeNode root = null;
@@ -173,9 +187,9 @@ public class TreeLoader {
         return treeNode;
     }
 
-    public static void updateTree(TaskTree treeNode, String treeName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException {
+    public static void updateTree(TaskTree treeNode, String treeName) throws org.xml.sax.SAXException, IOException, ParserConfigurationException, URISyntaxException {
         int treeIndex = 0;
-        Document document = getDocument("server\\src\\trees.xml");
+        Document document = getDocument(new File("").getAbsolutePath() + File.separator + "trees.xml");
         NodeList treeList = document.getElementsByTagName("taskTree");
         Node node = findTreeByUserName(treeList, treeName);
 
@@ -188,9 +202,10 @@ public class TreeLoader {
         Element element = (Element) document.getElementsByTagName("taskTree").item(treeIndex);
         element.getParentNode().removeChild(element);
         document.normalize();
-        FileWriter fileWriter = new FileWriter("server\\src\\trees.xml", false);
-        try {
-            toXML(document, fileWriter);
+        System.out.println("Resource:" +new File("").getAbsolutePath() + File.separator + "trees.xml");
+        FileWriter fileWriter = new FileWriter(new File("").getAbsolutePath() + File.separator + "trees.xml", false);
+            try {
+                toXML(document, fileWriter);
         } catch (TransformerException e) {
             e.printStackTrace();
         }

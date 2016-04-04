@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NetCracker:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/NetCracker_jar2</output-path>
+    <root id="archive" name="NetCracker.jar">
+      <element id="module-output" name="NetCracker" />
+    </root>
+  </artifact>
+</component>

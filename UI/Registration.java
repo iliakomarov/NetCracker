@@ -2,6 +2,7 @@ package UI;
 
 import client.src.client.Client;
 import client.src.client.exception.NoSuchUserException;
+import client.src.client.exception.RegistrationException;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -57,10 +58,14 @@ public class Registration extends JDialog {
                 client.Registration(textField1.getText(), textField2.getText(), textField3.getText(), passwordField1.getText());
             }
             else {
-                JOptionPane.showMessageDialog(null, "Password should equal!");
+                JOptionPane.showMessageDialog(null, "Password should be equal!");
             }
         } catch (NoSuchUserException e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "User already exist!");
+        } catch (RegistrationException e) {
+            JOptionPane.showMessageDialog(null, "Log out!");
+            e.printStackTrace();
         }
         dispose(); //TODO client
     }
