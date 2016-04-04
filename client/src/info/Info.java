@@ -29,8 +29,15 @@ public class Info {
         return info[index];
     }
     
-    public void setInfoAt(int index, Object i)
-    {
-        info[index]=i;
+    public void setInfoAt(int index, Object i) {
+        if (index!=info.length) {
+            info[index] = i;
+        }
+        else {
+            Object[] info1 = new Object[++length];
+            System.arraycopy(info,0,info1,0,length-1);
+            info1[info1.length-1]=i;
+            info=info1;
+        }
     }
 }
