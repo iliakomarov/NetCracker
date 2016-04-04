@@ -116,8 +116,8 @@ public class Task {
         time = time / 24;
         long days = time;
 
-        String a = (isBusy()) ? "Busy" : "Not busy", b = (isStopped()) ? "Stopped" : "Not stopped";
-        return new client.src.info.Info(id, getName(), new Date(creationDate.getTime()).toString(), a, b, new String(days + "d " + hours + "h " + min + "m " + sec + "s " + ms + "ms"));
+        String b = (isStopped()) ? "Stopped" : "Not stopped";
+        return new Info(getName(), id, new Date(creationDate.getTime()).toString(), b, new String(days + "d " + hours + "h " + min + "m " + sec + "s " + ms + "ms"));
     }
 
     public client.src.info.Info getSimpleInfo() //TODO info
