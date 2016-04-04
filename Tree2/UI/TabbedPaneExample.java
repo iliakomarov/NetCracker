@@ -75,12 +75,14 @@ public class TabbedPaneExample extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (nodeMenu != null) nodeMenu.setVisible(false);
+                    jTree.clearSelection();
                 }
             });
             tabbedPane.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (nodeMenu != null) nodeMenu.setVisible(false);
+                    jTree.clearSelection();
                 }
             });
         //}
