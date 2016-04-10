@@ -56,6 +56,7 @@ public class Registration extends JDialog {
         try {
             if(passwordField1.getText().equals(passwordField2.getText())) {
                 client.Registration(textField1.getText(), textField2.getText(), textField3.getText(), passwordField1.getText());
+                dispose();
             }
             else {
                 JOptionPane.showMessageDialog(null, "Password should be equal!");
@@ -67,7 +68,7 @@ public class Registration extends JDialog {
             JOptionPane.showMessageDialog(null, "Log out!");
             e.printStackTrace();
         }
-        dispose(); //TODO client
+         //TODO client
     }
 
     private void onCancel() {

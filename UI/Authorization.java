@@ -65,21 +65,27 @@ public class Authorization extends JDialog {
         Client client = Client.getClient();
         try {
             client.LogIn(textFieldLogin.getText(), passwordPasswordField.getText());
+            dispose();
         } catch (NoSuchUserException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "User not found!");
         }
-        dispose();//TODO client
+        //TODO client
     }
 
     private void onCancel() {
 // add your code here if necessary
+        java.awt.Window win[] = java.awt.Window.getWindows();
+        for(int i=0;i<win.length;i++){
+            win[i].dispose();
+        }
         dispose();
     }
 
     public static void main(String[] args) {
         Authorization dialog = new Authorization();
         dialog.pack();
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
         System.exit(0);
     }

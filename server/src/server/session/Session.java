@@ -1,6 +1,8 @@
 package server.src.server.session;
 
 
+import client.src.communications.*;
+import client.src.communications.GetId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -8,6 +10,17 @@ import org.xml.sax.SAXParseException;
 import server.src.Exceptions.StoppedTaskException;
 import server.src.Exceptions.SuchUserAlreadyExist;
 import server.src.communications.*;
+import server.src.communications.AddTask;
+import server.src.communications.DeleteTask;
+import server.src.communications.GetTree;
+import server.src.communications.LogIn;
+import server.src.communications.Message;
+import server.src.communications.PauseTask;
+import server.src.communications.Registration;
+import server.src.communications.Rename;
+import server.src.communications.StartTask;
+import server.src.communications.StopTask;
+import server.src.generations.IDGenerator;
 import server.src.loader.TreeLoader;
 import server.src.server.HttpServer;
 import server.src.server.Marshall;
@@ -113,8 +126,9 @@ public class Session implements Runnable {
                         else tree = TreeLoader.loadTree(getCurrUser().getName());
 
                         TaskTreeNode findedNode = tree.getRoot().seekForTaskByID(addTask.getId());
-                        addTask.getUserObject().setParentID(addTask.getId());
+                        addTask.getUserObject().setParentID(findedNode.getTask().getId());
                         findedNode.add(addTask.getUserObject());
+
 
                         if (addTask.getTreeName().equals("general")) TreeLoader.updateTree(tree, "general");
                         else TreeLoader.updateTree(tree, getCurrUser().getName());
@@ -448,6 +462,20 @@ public class Session implements Runnable {
                     } catch (TransformerException e) {
                         e.printStackTrace();
                     }
+
+                }else if (message.getMessage().equals("id") && isLogIn) {
+
+                    FileInputStream fileInputStream = new FileInputStream(new File("").getAbsolutePath() + File.separator + "lastID.txt");
+                    DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+
+                    Integer lastID = dataInputStream.readInt();
+                    FileOutputStream fileOutputStream = new FileOutputStream(new File("").getAbsolutePath() + File.separator + "lastID.txt");
+                    DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
+                    client.src.communications.GetId getId = new GetId();
+                    getId.setId(lastID);
+                    TTP.sendObject(getId, getOutputStream(), GetId.class);
+                    lastID += 1;
+                    dataOutputStream.writeInt(lastID);
 
                 }
                 else if (!isLogIn){

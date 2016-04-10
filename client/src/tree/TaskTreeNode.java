@@ -95,10 +95,12 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
 
     public long getWorkingTime() throws BusyTaskException, BusyTaskException {
         long time = getTask().getWorkingTime();
-        for (Object child : children) {
-            TaskTreeNode node = (TaskTreeNode) child;
-            Task task = node.getTask();
-            time += task.getWorkingTime();
+        if(children != null) {
+            for (Object child : children) {
+                TaskTreeNode node = (TaskTreeNode) child;
+                Task task = node.getTask();
+                time += task.getWorkingTime();
+            }
         }
         return time;
     }

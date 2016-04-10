@@ -258,16 +258,6 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        finally {
-            FileOutputStream fileOutputStream = new FileOutputStream(new File("").getAbsolutePath() + File.separator + "lastID.xml");
-            DataOutputStream dataOutputStream = new DataOutputStream(fileOutputStream);
-            IDGenerator idGenerator = IDGenerator.getInstance();
-            int last = idGenerator.getId();
-            dataOutputStream.writeInt(last);
-            dataOutputStream.flush();
-            dataOutputStream.close();
-            fileOutputStream.close();
-        }
 
         Message message = null;
         try {
@@ -547,6 +537,24 @@ public class Client {
 
 
         return false;
+    }
+
+
+    public Integer getId(){
+        try {
+            sendObject(new Message("id"), getOutputStream(), Message.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Integer id = 0;
+        GetId getId = null;
+        try {
+            getId = (GetId)getObject(GetId.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return getId.getId();
     }
 
 }

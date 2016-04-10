@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -38,8 +39,7 @@ public class Task {
 
     public Task(){}
 
-    private Task(String name)
-    {
+    private Task(String name) throws IOException {
         this.id = IDGenerator.getInstance().getId();
         this.name=name;
         this.busy=this.stopped=false;
@@ -48,8 +48,7 @@ public class Task {
         this.status="";
     }
 
-    public static Task getInstance(String name)
-    {
+    public static Task getInstance(String name) throws IOException {
         return new Task(name);
     }
 
@@ -145,5 +144,9 @@ public class Task {
     
     public String getName(){
         return this.name;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 }

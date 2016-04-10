@@ -6,11 +6,13 @@ import UI.Authorization;
 import UI.RequestTaskName;
 import client.src.client.Client;
 import client.src.client.exception.NoSuchUserException;
+import client.src.tree.TaskTree;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.rmi.UnmarshalException;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -24,18 +26,24 @@ public class TabbedPaneExample extends JFrame {
     private JMenuBar menu;
     private JFrame statistic;
 
+
     private void makeTree(String treeName) throws IOException, NoSuchUserException {
+        tabbedPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                nodeMenu.setCurrentTab(tabbedPane.getSelectedIndex());
+            }
+        });
         client.src.client.Client client = Client.getClient();
         client.src.tree.TaskTree model = null;
-        try{
+        try {
 
 
             model = client.getTree(treeName);
-        }
-        catch (NoSuchUserException e){
+        } catch (NoSuchUserException e) {
             System.out.println(e.getMessage());
-        }
-        catch (UnmarshalException e){
+        } catch (UnmarshalException e) {
             System.out.println(e.getMessage());
         }
 
@@ -48,44 +56,51 @@ public class TabbedPaneExample extends JFrame {
         //tabbedPane.removeAll();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
         //for (int i = 0; i < root.getChildCount(); i++) {
-            JPanel panel = new JPanel();
-            JTree jTree = new JTree(root, true);
-            jTree.setLocation(panel.getLocation());
-            jTree.setSize(240, 160);
-            panel.setLayout(new FlowLayout(0));
-            panel.add(jTree);
-            panel.setBackground(Color.WHITE);
-            JScrollPane scrollPane = new JScrollPane();
-            scrollPane.setViewportView(panel);
-            tabbedPane.addTab("Task", scrollPane);
-            jTree.addTreeSelectionListener(new TreeSelectionListener() {
-                @Override
-                public void valueChanged(TreeSelectionEvent e) {
-                    if (nodeMenu != null) nodeMenu.setVisible(false);
-                    try {
-                        nodeMenu = new TaskMenu(jTree);
-                    }catch (NullPointerException e1){
-                        System.out.println(e1.getMessage());
-                    }
-                    nodeMenu.setLocation(MouseInfo.getPointerInfo().getLocation());
-                    nodeMenu.setVisible(true);
+        JPanel panel = new JPanel();
+        JTree jTree = new JTree(root, true);
+        jTree.setLocation(panel.getLocation());
+        jTree.setSize(240, 160);
+        panel.setLayout(new FlowLayout(0));
+        panel.add(jTree);
+        panel.setBackground(Color.WHITE);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(panel);
+        TaskTree model = (TaskTree) tree.getModel();
+
+        tabbedPane.addTab(model.getUser().getName(), scrollPane);
+        jTree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                if (nodeMenu != null) nodeMenu.setVisible(false);
+                try {
+                    nodeMenu = new TaskMenu(jTree);
+
+                } catch (NullPointerException e1) {
+                    System.out.println(e1.getMessage());
                 }
-            });
-            scrollPane.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (nodeMenu != null) nodeMenu.setVisible(false);
-                    jTree.clearSelection();
-                }
-            });
-            tabbedPane.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (nodeMenu != null) nodeMenu.setVisible(false);
-                    jTree.clearSelection();
-                }
-            });
+                nodeMenu.setLocation(MouseInfo.getPointerInfo().getLocation());
+                nodeMenu.setVisible(true);
+                int a = tabbedPane.getSelectedIndex();
+                nodeMenu.setCurrentTab(tabbedPane.getSelectedIndex());
+
+            }
+        });
+        scrollPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (nodeMenu != null) nodeMenu.setVisible(false);
+                jTree.clearSelection();
+            }
+        });
+        tabbedPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (nodeMenu != null) nodeMenu.setVisible(false);
+                jTree.clearSelection();
+            }
+        });
         //}
+
     }
 
     private void makeMenu() {
@@ -110,11 +125,9 @@ public class TabbedPaneExample extends JFrame {
                     client.src.tree.TaskTreeNode node = (client.src.tree.TaskTreeNode) tree.getLastSelectedPathComponent();
                     client.src.client.Client client = Client.getClient();
                     try {
-                        if(node.getTask().getName().split("/").length == 2) {
-                            newChild.getTask().changeName(newChild.getTask().getName() + "/general");
+                        if (tabbedPane.getSelectedIndex() == 1) {
                             client.addTask(newChild, node.getTask().getId(), "general");
-                        }
-                        else client.addTask(newChild, node.getTask().getId(), "");
+                        } else client.addTask(newChild, node.getTask().getId(), "");
                     } catch (NoSuchUserException e1) {
                         e1.printStackTrace();
                     } catch (IOException e1) {
@@ -125,6 +138,8 @@ public class TabbedPaneExample extends JFrame {
                 }
             }
         });
+
+
         menuStat.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -183,6 +198,7 @@ public class TabbedPaneExample extends JFrame {
                 Client client = Client.getClient();
                 client.LogOut();
                 tabbedPane.removeAll();
+                setTitle("Task tracker");
 
             }
         });
@@ -203,22 +219,12 @@ public class TabbedPaneExample extends JFrame {
         Thread thread = new Thread() {
 
             public void run() {
-            Client client = Client.getClient();
+                Client client = Client.getClient();
                 while (true) {
                     if (client.isRefreshGeneralTree()) {
                         client.setIsRefreshGeneralTree(false);
-                        try {
-                            makeTree("general");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchUserException e) {
-                            e.printStackTrace();
-                        }
-                        int currTab = tabbedPane.getSelectedIndex();
-                        updateTree();
-                        tabbedPane.setSelectedIndex(currTab);
-                        tabbedPane.remove(1);
-                        JOptionPane.showMessageDialog(null, "Tree was refresh!");
+                        String[] title = getTitle().split(" ");
+                        setTitle(title[0] + " " + title[1] + " " + title[2] + " " + title[3] + " | " + "General tree was refresh at " + new Date());
                         System.out.println("Tree was refresh!");
                     }
 
@@ -244,10 +250,8 @@ public class TabbedPaneExample extends JFrame {
             makeTree("general");
             updateTree();
             makeMenu();
-
             //updateTree(); //TODO client
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

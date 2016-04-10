@@ -14,6 +14,7 @@ import server.src.info.Task;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.xml.bind.annotation.*;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.*;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
 
 
 
-    private TaskTreeNode(String taskName) {
+    private TaskTreeNode(String taskName) throws IOException {
         super(Task.getInstance(taskName));
 
     }
@@ -50,7 +51,13 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
 
     public static TaskTreeNode getInstance(String taskName) {
 
-        return new TaskTreeNode(taskName);
+        try {
+            return new TaskTreeNode(taskName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public Task getTask() {

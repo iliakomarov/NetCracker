@@ -3,6 +3,7 @@ package client.src.info;
 
 import Tree2.src.Exceptions.BusyTaskException;
 import Tree2.src.Exceptions.StoppedTaskException;
+import client.src.client.Client;
 import client.src.generations.IDGenerator;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,13 +42,10 @@ public class Task {
 
     private Task(String name) throws IOException {
 
-        FileInputStream fileInputStream = new FileInputStream(new File("").getAbsolutePath() + File.separator + "lastID.txt");
-        DataInputStream dataInputStream = new DataInputStream(fileInputStream);
-        int lastID = dataInputStream.readInt();
         IDGenerator generator = IDGenerator.getInstance();
-        generator.setId(lastID);
-        dataInputStream.close();
-        this.id = generator.getId();
+        Client client = Client.getClient();
+
+        this.id = client.getId();
         this.name=name;
         this.busy=this.stopped=false;
         this.creationDate = new Date();
