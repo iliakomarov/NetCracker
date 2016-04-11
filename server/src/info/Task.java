@@ -110,7 +110,7 @@ public class Task {
         long days = time;
 
         String b = (isStopped()) ? "Stopped" : "Not stopped";
-        return new Info(getName(), id, new Date(creationDate.getTime()).toString(), b, new String(days + "d " + hours + "h " + min + "m " + sec + "s " + ms + "ms"));
+        return new Info(getName(), new Date(creationDate.getTime()).toString(), b, new String(days + "d " + hours + "h " + min + "m " + sec + "s " + ms + "ms"));
     }
 
     public Info getSimpleInfo() //TODO info
