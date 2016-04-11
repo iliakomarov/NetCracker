@@ -32,22 +32,19 @@ public class StatisticWindow extends JFrame {
         }
 
         public String getColumnName(int index) {
-            switch (index) {
-                    case 0:
-                        return "Name";
-                    case 1:
-                        return "ID";
-                    case 2:
-                        return "Creation Date";
-                    case 3:
-                        return "Stopped";
-                    case 4:
-                        return "Task Time";
-                    case 5:
-                        return "Full Task Time";
-                    default:
-                        return "Unknown";
-                }
+            switch (columnIndex) {
+                case 0:
+                    return "Name";
+                case 1:
+                    return "Creation Date";
+                case 2:
+                    return "Stopped";
+                case 3:
+                    return "Task Time";
+                case 4:
+                    return "Full Task Time";
+            }
+            return "";
         }
 
         public boolean isCellEditable(int rowIndex, int columnIndex) {
