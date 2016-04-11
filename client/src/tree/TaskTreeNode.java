@@ -98,7 +98,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         if(children != null) {
             for (Object child : children) {
                 TaskTreeNode node = (TaskTreeNode) child;
-                Task task = node.getTask();
+                //Task task = node.getTask();
                 time += task.getWorkingTime();
             }
         }
