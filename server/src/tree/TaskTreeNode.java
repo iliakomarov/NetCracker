@@ -105,7 +105,7 @@ public class TaskTreeNode extends DefaultMutableTreeNode{
         for (Object child : children) {
             TaskTreeNode node = (TaskTreeNode) child;
             //Task task = node.getTask();
-            time += task.getWorkingTime();
+            time += node.getWorkingTime();
         }
         return time;
     }
